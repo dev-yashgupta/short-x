@@ -44,7 +44,7 @@ const MOBILE_URL = 'tiktokindia://';
 // Optionally read from environment when available (Expo web supports EXPO_PUBLIC_* envs)
 export const WEB_URL =
   (typeof process !== 'undefined' && process.env && (process.env.EXPO_PUBLIC_FRONTEND_URL || process.env.FRONTEND_URL))
-    || 'https://TicToc-india.vercel.app'; // Updated with a more realistic domain
+    || 'https://Short-X.vercel.app'; // Updated with a more realistic domain
 export const MOBILE_URL = 'TicTocindia://';
 >>>>>>> master
 
