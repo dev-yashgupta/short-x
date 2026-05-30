@@ -24,7 +24,7 @@ export default {
 <<<<<<< HEAD
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'com.gggroup.tiktokindia',
+    bundleIdentifier: 'com.gggroup.ShortX',
 =======
   scheme: 'ShortX',
   ios: {
@@ -52,7 +52,7 @@ export default {
       foregroundImage: './assets/3.png',
       backgroundColor: '#ffffff'
     },
-    package: 'com.gggroup.tiktokindia',
+    package: 'com.gggroup.ShortX',
     versionCode: 1,
 =======
       foregroundImage: './assets/icon.png',
