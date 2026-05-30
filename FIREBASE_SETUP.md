@@ -1,7 +1,7 @@
 
-# Firebase Setup Guide for TicToc India
+# Firebase Setup Guide for Short X
 
-This guide will help you set up Firebase Cloud Messaging for push notifications in your TicToc India app.
+This guide will help you set up Firebase Cloud Messaging for push notifications in your Short X app.
 
 ## 🚀 Quick Setup
 
@@ -24,7 +24,7 @@ This guide will help you set up Firebase Cloud Messaging for push notifications 
 
 1. In Firebase Console, click "Add app" → Android icon
 2. Package name: `com.gggroup.ShortX`
-3. App nickname: "TicToc India Android"
+3. App nickname: "Short X Android"
 4. Click "Register app"
 5. Download `google-services.json`
 6. Place it in: `android/app/google-services.json` (replace the existing file)
@@ -33,7 +33,7 @@ This guide will help you set up Firebase Cloud Messaging for push notifications 
 
 1. In Firebase Console, click "Add app" → iOS icon
 2. Bundle ID: `com.gggroup.ShortX`
-3. App nickname: "TicToc India iOS"
+3. App nickname: "Short X iOS"
 4. Click "Register app"
 5. Download `GoogleService-Info.plist`
 6. Place it in: `ios/TicTocclone/GoogleService-Info.plist` (replace the existing file)
