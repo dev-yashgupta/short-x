@@ -45,7 +45,7 @@ const MOBILE_URL = 'tiktokindia://';
 export const WEB_URL =
   (typeof process !== 'undefined' && process.env && (process.env.EXPO_PUBLIC_FRONTEND_URL || process.env.FRONTEND_URL))
     || 'https://Short-X.vercel.app'; // Updated with a more realistic domain
-export const MOBILE_URL = 'TicTocindia://';
+export const MOBILE_URL = 'ShortX://';
 >>>>>>> master
 
 // Export the appropriate URL based on platform
