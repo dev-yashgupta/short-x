@@ -39,7 +39,7 @@ export const USER_KEY = 'user_data';
 // Base URLs for different environments
 <<<<<<< HEAD
 const WEB_URL = 'https://yourdomain.com'; // Replace with your actual web domain
-const MOBILE_URL = 'tiktokindia://';
+const MOBILE_URL = 'ShortX://';
 =======
 // Optionally read from environment when available (Expo web supports EXPO_PUBLIC_* envs)
 export const WEB_URL =
