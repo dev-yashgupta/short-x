@@ -74,8 +74,8 @@ const VideoControls = ({
 <<<<<<< HEAD
       const shareUrl = `${FRONTEND_URL}/video/${videoId}`;
       const shareMessage = description
-        ? `${description}\n\nWatch this video on TikTok India: ${shareUrl}`
-        : `Watch this video on TikTok India: ${shareUrl}`;
+        ? `${description}\n\nWatch this video on Short X: ${shareUrl}`
+        : `Watch this video on Short X: ${shareUrl}`;
 
       // For web platform
       if (Platform.OS === 'web' && navigator.share) {
