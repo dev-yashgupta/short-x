@@ -96,7 +96,7 @@ const config = {
 
 const linking = {
 <<<<<<< HEAD
-  prefixes: ['https://yourdomain.com', 'tiktokindia://'],
+  prefixes: ['https://yourdomain.com', 'ShortX://'],
 =======
   prefixes: [WEB_URL, MOBILE_URL],
 >>>>>>> master
