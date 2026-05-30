@@ -73,7 +73,7 @@ const OTPVerificationScreen = ({ route, navigation }) => {
       } else {
 <<<<<<< HEAD
         Alert.alert(
-          'Welcome to TikTok India! 🎉',
+          'Welcome to Short X! 🎉',
           'Your account has been verified successfully.',
           [
             {
@@ -427,7 +427,7 @@ const OTPVerificationScreen = ({ route, navigation }) => {
                 <FontAwesome5 name="check-circle" size={50} color="#fff" />
               </View>
 <<<<<<< HEAD
-              <Text style={styles.successTitle}>Welcome to TikTok India! 🎉</Text>
+              <Text style={styles.successTitle}>Welcome to Short X! 🎉</Text>
 =======
               <Text style={styles.successTitle}>Welcome to TicToc India! 🎉</Text>
 >>>>>>> master
