@@ -219,7 +219,7 @@ const handleDeepLink = (route, navigation) => {
 export const generateShareUrl = (screen, params = {}) => {
   const baseUrl = Platform.select({
     web: 'https://yourdomain.com',
-    default: 'tiktokindia://'
+    default: 'ShortX://'
   });
 
   switch (screen) {
@@ -365,7 +365,7 @@ export const validateShareUrl = (url) => {
 <<<<<<< HEAD
     // Ensure the URL has our domain
     if (!urlObj.hostname.includes('yourdomain.com') && 
-        !urlObj.protocol.includes('tiktokindia')) {
+        !urlObj.protocol.includes('ShortX')) {
 =======
     // Ensure the URL has our configured domain or scheme
     let webHost;
