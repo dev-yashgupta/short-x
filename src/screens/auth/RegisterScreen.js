@@ -305,7 +305,7 @@ const RegisterScreen = ({ navigation }) => {
             </View>
             <Text style={styles.successText}>Registration Successful!</Text>
 <<<<<<< HEAD
-            <Text style={styles.successSubText}>Welcome to TikTok India</Text>
+            <Text style={styles.successSubText}>Welcome to Short X</Text>
 =======
             <Text style={styles.successSubText}>Welcome to TicToc India</Text>
 >>>>>>> master
