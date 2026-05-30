@@ -9,7 +9,7 @@ This guide will help you set up Firebase Cloud Messaging for push notifications 
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Click "Create a project" or "Add project"
-3. Enter your project name (e.g., "TicToc-india")
+3. Enter your project name (e.g., "Short-X")
 4. Enable Google Analytics (recommended)
 5. Choose your Google Analytics account
 6. Click "Create project"
