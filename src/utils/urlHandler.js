@@ -227,22 +227,22 @@ export const generateShareUrl = (screen, params = {}) => {
       return {
         url: `${baseUrl}/video/${params.videoId}`,
         message: params.description 
-          ? `${params.description}\n\nWatch this video on TikTok India: `
-          : 'Watch this video on TikTok India: ',
+          ? `${params.description}\n\nWatch this video on Short X: `
+          : 'Watch this video on Short X: ',
         title: 'Share Video'
       };
     case 'profile':
       return {
         url: `${baseUrl}/user/${params.userId}`,
         message: params.username 
-          ? `Check out @${params.username} on TikTok India: `
-          : 'Check out this profile on TikTok India: ',
+          ? `Check out @${params.username} on Short X: `
+          : 'Check out this profile on Short X: ',
         title: 'Share Profile'
       };
     case 'hashtag':
       return {
         url: `${baseUrl}/hashtag/${params.tag}`,
-        message: `Check out #${params.tag} on TikTok India: `,
+        message: `Check out #${params.tag} on Short X: `,
         title: 'Share Hashtag'
 =======
       navigation.navigate('Main', { 
@@ -306,7 +306,7 @@ export const generateShareUrl = (screen, params = {}) => {
       return {
         url: baseUrl,
 <<<<<<< HEAD
-        message: 'Check out TikTok India: ',
+        message: 'Check out Short X: ',
         title: 'Share'
 =======
         message: 'Join TicToc India and discover amazing short videos: ',
