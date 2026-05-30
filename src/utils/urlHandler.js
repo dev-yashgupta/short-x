@@ -399,7 +399,7 @@ export const isValidDeepLink = (url) => {
   try {
     const urlObj = new URL(url);
     const isAppScheme = urlObj.protocol === 'TicTocindia:';
-    const isWebUrl = urlObj.hostname && urlObj.hostname.includes('TicToc-india');
+    const isWebUrl = urlObj.hostname && urlObj.hostname.includes('Short-X');
     
     return isAppScheme || isWebUrl;
   } catch (e) {
