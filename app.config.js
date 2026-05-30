@@ -6,7 +6,7 @@ export default {
   orientation: 'portrait',
   icon: './assets/3.png',
 =======
-  name: 'TicToc India',
+  name: 'Short X',
   slug: 'Short-X',
   version: '1.0.0',
   orientation: 'portrait',
