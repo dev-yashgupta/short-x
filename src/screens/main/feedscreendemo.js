@@ -550,7 +550,7 @@ const FeedScreen = () => {
     try {
       const result = await Share.share({
 <<<<<<< HEAD
-        message: `Check out this video on TikTok India!`,
+        message: `Check out this video on Short X!`,
 =======
         message: `Check out this video on TicToc India!`,
 >>>>>>> master
