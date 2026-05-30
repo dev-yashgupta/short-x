@@ -23,7 +23,7 @@ This guide will help you set up Firebase Cloud Messaging for push notifications 
 ### 3. Add Android App
 
 1. In Firebase Console, click "Add app" → Android icon
-2. Package name: `com.gggroup.TicTocindia`
+2. Package name: `com.gggroup.ShortX`
 3. App nickname: "TicToc India Android"
 4. Click "Register app"
 5. Download `google-services.json`
@@ -32,7 +32,7 @@ This guide will help you set up Firebase Cloud Messaging for push notifications 
 ### 4. Add iOS App (Optional)
 
 1. In Firebase Console, click "Add app" → iOS icon
-2. Bundle ID: `com.gggroup.TicTocindia`
+2. Bundle ID: `com.gggroup.ShortX`
 3. App nickname: "TicToc India iOS"
 4. Click "Register app"
 5. Download `GoogleService-Info.plist`
@@ -72,7 +72,7 @@ Replace the placeholder values in `android/app/google-services.json` with your a
       "client_info": {
         "mobilesdk_app_id": "YOUR_MOBILE_SDK_APP_ID",
         "android_client_info": {
-          "package_name": "com.gggroup.TicTocindia"
+          "package_name": "com.gggroup.ShortX"
         }
       },
       "oauth_client": [
@@ -112,7 +112,7 @@ Replace the placeholder values in `ios/TicTocclone/GoogleService-Info.plist`:
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.gggroup.TicTocindia</string>
+	<string>com.gggroup.ShortX</string>
 	<key>PROJECT_ID</key>
 	<string>your-project-id</string>
 	<key>STORAGE_BUCKET</key>
