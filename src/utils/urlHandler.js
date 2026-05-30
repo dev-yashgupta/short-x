@@ -283,7 +283,7 @@ export const generateShareUrl = (screen, params = {}) => {
         url: `${baseUrl}/video/${params.videoId}`,
         message: `${videoDescription}\n\nWatch on TicToc India: `,
         title: 'Share Video',
-        hashtags: '#TicTocIndia #ShortVideos'
+        hashtags: '#ShortX #ShortVideos'
       };
     case 'profile':
       const username = params.username || 'User';
@@ -291,7 +291,7 @@ export const generateShareUrl = (screen, params = {}) => {
         url: `${baseUrl}/user/${params.userId}`,
         message: `Check out @${username} on TicToc India: `,
         title: 'Share Profile',
-        hashtags: '#TicTocIndia #Profile'
+        hashtags: '#ShortX #Profile'
       };
     case 'hashtag':
       const tag = params.tag || 'trending';
@@ -299,7 +299,7 @@ export const generateShareUrl = (screen, params = {}) => {
         url: `${baseUrl}/hashtag/${tag}`,
         message: `Discover amazing #${tag} videos on TicToc India: `,
         title: 'Share Hashtag',
-        hashtags: `#${tag} #TicTocIndia`
+        hashtags: `#${tag} #ShortX`
 >>>>>>> master
       };
     default:
@@ -311,7 +311,7 @@ export const generateShareUrl = (screen, params = {}) => {
 =======
         message: 'Join TicToc India and discover amazing short videos: ',
         title: 'TicToc India',
-        hashtags: '#TicTocIndia #ShortVideos #Trending'
+        hashtags: '#ShortX #ShortVideos #Trending'
 >>>>>>> master
       };
   }
@@ -398,7 +398,7 @@ export const isValidDeepLink = (url) => {
   
   try {
     const urlObj = new URL(url);
-    const isAppScheme = urlObj.protocol === 'TicTocindia:';
+    const isAppScheme = urlObj.protocol === 'ShortX:';
     const isWebUrl = urlObj.hostname && urlObj.hostname.includes('Short-X');
     
     return isAppScheme || isWebUrl;
