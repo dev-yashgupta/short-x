@@ -7,7 +7,7 @@ export default {
   icon: './assets/3.png',
 =======
   name: 'TicToc India',
-  slug: 'TicToc-india',
+  slug: 'Short-X',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
