@@ -18,10 +18,7 @@ import { messageService } from '../../services/messageService';
 import { formatChatTime } from '../../utils/dateUtils';
 import { useAuth } from '../../contexts/AuthContext';
 import socketService from '../../services/socketService';
-<<<<<<< HEAD
-=======
 import { notificationService } from '../../services/notificationService';
->>>>>>> master
 
 const ChatListScreen = () => {
   const navigation = useNavigation();
@@ -44,10 +41,6 @@ const ChatListScreen = () => {
         setFilteredChats(chatData);
       }
     } catch (error) {
-<<<<<<< HEAD
-      console.error('Error loading chats:', error);
-=======
->>>>>>> master
       Alert.alert('Error', `Failed to load chats: ${error.response?.data?.msg || error.message}`);
     } finally {
       setLoading(false);
@@ -59,18 +52,6 @@ const ChatListScreen = () => {
     useCallback(() => {
       loadChats();
 
-<<<<<<< HEAD
-      // Setup socket listeners for real-time updates
-      const handleNewMessageNotification = (data) => {
-        // Refresh chat list to update last message and unread count
-        loadChats(false);
-      };
-
-      socketService.onNewMessageNotification(handleNewMessageNotification);
-
-      return () => {
-        socketService.removeListener('new_message_notification', handleNewMessageNotification);
-=======
       // 🔔 Clear chat count badge when user visits chat list
       notificationService.clearChatCount();
 
@@ -143,13 +124,10 @@ const ChatListScreen = () => {
         socketService.removeAllListeners('global_messages_read');
         socketService.removeAllListeners('chat_list_update');
         socketService.removeAllListeners('unread_count_update');
->>>>>>> master
       };
     }, [])
   );
 
-<<<<<<< HEAD
-=======
   // Keep filtered chats in sync with main chats array for real-time updates
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -165,14 +143,11 @@ const ChatListScreen = () => {
     }
   }, [chats, searchQuery]);
 
->>>>>>> master
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     loadChats(false);
   }, []);
 
-<<<<<<< HEAD
-=======
   // Helper functions for real-time updates
   const updateChatInList = useCallback((newMessageData) => {
     
@@ -265,7 +240,6 @@ const ChatListScreen = () => {
     );
   }, []);
 
->>>>>>> master
   // Search functionality
   const handleSearch = useCallback((query) => {
     setSearchQuery(query);
@@ -275,11 +249,7 @@ const ChatListScreen = () => {
       const filtered = chats.filter(chat =>
         chat.otherUser.username.toLowerCase().includes(query.toLowerCase()) ||
         chat.otherUser.displayName?.toLowerCase().includes(query.toLowerCase()) ||
-<<<<<<< HEAD
-        chat.lastMessage.toLowerCase().includes(query.toLowerCase())
-=======
         (chat.lastMessage?.content || chat.lastMessage).toLowerCase().includes(query.toLowerCase())
->>>>>>> master
       );
       setFilteredChats(filtered);
     }
@@ -338,11 +308,7 @@ const ChatListScreen = () => {
               <MaterialIcons
                 name={item.lastMessage.read ? "done-all" : "done"}
                 size={16}
-<<<<<<< HEAD
-                color={item.lastMessage.read ? theme.colors.primary : theme.colors.textSecondary}
-=======
                 color={item.lastMessage.read ? "#4FC3F7" : theme.colors.textSecondary}
->>>>>>> master
                 style={styles.readIcon}
               />
             )}
