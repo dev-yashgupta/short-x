@@ -3,13 +3,8 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider } from '@react-navigation/native';
-<<<<<<< HEAD
-import { StatusBar, Platform, ActivityIndicator } from 'react-native';
-=======
-import { StatusBar, Platform, ActivityIndicator, AppState } from 'react-native';
+import { StatusBar, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
->>>>>>> master
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import ErrorBoundary from './src/components/shared/ErrorBoundary';
 import { theme } from './src/config/theme';
@@ -18,11 +13,6 @@ import AuthNavigator from './src/navigation/AuthNavigator';
 import MainTabNavigator from './src/navigation/MainTabNavigator';
 import linking from './src/navigation/LinkingConfiguration';
 import PermissionManager from './src/utils/PermissionManager';
-<<<<<<< HEAD
-
-const Stack = createNativeStackNavigator();
-
-=======
 import { setupDeepLinking } from './src/utils/urlHandler';
 import { safeInitializeFirebase, initializeFirebaseMessaging } from './src/config/firebase';
 import notificationPermissionService from './src/services/notificationPermissionService';
@@ -53,18 +43,18 @@ function FirebaseMessagingSetup({ navigationRef, firebaseSubscriptionsRef }) {
 
         // Setup messaging with navigation handlers
         const subscriptions = await initializeFirebaseMessaging(
-          user?._id, // userId - use current user if available
-          
+          user?._id,
+
           // Foreground notification handler
-          async (remoteMessage) => {
+          async (_remoteMessage) => {
             // Just update badges for foreground - no navigation needed
           },
-          
+
           // Background notification tap handler
           async (remoteMessage) => {
             await notificationNavigationService.handleBackgroundNotificationTap(remoteMessage);
           },
-          
+
           // Initial notification handler (app opened from killed state)
           async (remoteMessage) => {
             await notificationNavigationService.handleInitialNotification(remoteMessage);
@@ -72,28 +62,26 @@ function FirebaseMessagingSetup({ navigationRef, firebaseSubscriptionsRef }) {
         );
 
         firebaseSubscriptionsRef.current = subscriptions;
-                
-      } catch (error) {
+
+      } catch (_error) {
         // Silent fail - don't crash the app
       }
     };
 
-    // Setup Firebase messaging after a small delay to ensure app is ready
     const timeoutId = setTimeout(() => {
       setupFirebaseMessaging();
     }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
-      
-      // Cleanup on unmount
+
       if (firebaseSubscriptionsRef.current) {
         import('./src/config/firebase').then(({ cleanupFirebaseMessaging }) => {
           cleanupFirebaseMessaging(firebaseSubscriptionsRef.current);
         });
       }
     };
-  }, []); // Run once on component mount
+  }, []);
 
   // Update Firebase token when user changes
   useEffect(() => {
@@ -101,12 +89,10 @@ function FirebaseMessagingSetup({ navigationRef, firebaseSubscriptionsRef }) {
       if (firebaseSubscriptionsRef.current && firebaseSubscriptionsRef.current.token) {
         try {
           const { registerDeviceToken } = await import('./src/config/firebase');
-          
-          // Re-register token with new user ID or unregister if logged out
           if (user && user._id) {
             await registerDeviceToken(user._id, firebaseSubscriptionsRef.current.token);
           }
-        } catch (error) {
+        } catch (_error) {
           // Silent fail - don't crash the app
         }
       }
@@ -118,7 +104,6 @@ function FirebaseMessagingSetup({ navigationRef, firebaseSubscriptionsRef }) {
   return null;
 }
 
->>>>>>> master
 function AppNavigator() {
   const { isAuthenticated, loading } = useAuth();
 
@@ -139,53 +124,13 @@ function AppNavigator() {
 
 export default function App() {
   const navigationRef = useRef();
-<<<<<<< HEAD
-
-  useEffect(() => {
-    const requestPermissions = async () => {
-      try {
-        await PermissionManager.requestInitialPermissions();
-      } catch (error) {
-        console.error('Error requesting permissions:', error);
-      }
-    };
-
-    requestPermissions();
-  }, []);
-
-  return (
-    <Provider store={store}>
-      <ErrorBoundary>
-        <SafeAreaProvider>
-          <AuthProvider>
-            <NavigationContainer
-              ref={navigationRef}
-              linking={linking}
-              theme={{
-                dark: true,
-                colors: theme.colors
-              }}
-              fallback={<ActivityIndicator size="large" color={theme.colors.primary} />}
-            >
-              <StatusBar barStyle="light-content" backgroundColor="black" />
-              <AppNavigator />
-            </NavigationContainer>
-          </AuthProvider>
-        </SafeAreaProvider>
-      </ErrorBoundary>
-    </Provider>
-  );
-}
-
-
-=======
   const firebaseSubscriptionsRef = useRef(null);
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
         // Request essential permissions first (non-blocking)
-        PermissionManager.requestInitialPermissions().catch(err => {
+        PermissionManager.requestInitialPermissions().catch(() => {
           // Silent fail - don't crash the app
         });
 
@@ -193,26 +138,24 @@ export default function App() {
         safeInitializeFirebase()
           .then(firebaseInitialized => {
             if (firebaseInitialized) {
-              // CRITICAL FIX: Delay notification permission initialization significantly
-              // to prevent Android permission callback crash
+              // Delay notification permission initialization to prevent Android crash
               setTimeout(async () => {
                 try {
                   const shouldRequest = await notificationPermissionService.shouldRequestPermission();
-
                   if (shouldRequest) {
                     await notificationPermissionService.initialize();
                   }
-                } catch (err) {
+                } catch (_err) {
                   // Silent fail - don't crash the app
                 }
-              }, 8000); // 8 second delay to ensure bridge is ready
+              }, 8000);
             }
           })
-          .catch(error => {
+          .catch(() => {
             // Silent fail - don't crash the app
           });
 
-      } catch (error) {
+      } catch (_error) {
         // Continue with app initialization regardless of errors
       }
     };
@@ -231,12 +174,11 @@ export default function App() {
   // Setup notification navigation when navigation is ready
   useEffect(() => {
     if (navigationRef.current) {
-            notificationNavigationService.setNavigationRef(navigationRef);
-      
-      // Process any stored initial notification
+      notificationNavigationService.setNavigationRef(navigationRef);
+
       setTimeout(() => {
         notificationNavigationService.processStoredInitialNotification();
-      }, 2000); // Wait for app to fully load
+      }, 2000);
     }
   }, [navigationRef.current]);
 
@@ -257,9 +199,9 @@ export default function App() {
               >
                 <StatusBar barStyle="light-content" backgroundColor="black" />
                 <AppNavigator />
-                <FirebaseMessagingSetup 
-                  navigationRef={navigationRef} 
-                  firebaseSubscriptionsRef={firebaseSubscriptionsRef} 
+                <FirebaseMessagingSetup
+                  navigationRef={navigationRef}
+                  firebaseSubscriptionsRef={firebaseSubscriptionsRef}
                 />
               </NavigationContainer>
             </AuthProvider>
@@ -269,5 +211,3 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
-
->>>>>>> master
