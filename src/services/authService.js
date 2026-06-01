@@ -28,18 +28,9 @@ export const authService = {
   register: async (userData) => {
     try {
       const response = await api.post('/auth/register', userData);
-<<<<<<< HEAD
-      
-      if (response.data.success && response.data.token) {
-        await AsyncStorage.setItem(TOKEN_KEY, response.data.token);
-        await AsyncStorage.setItem(USER_KEY, JSON.stringify(response.data.user));
-      }
-      
-=======
 
       // Registration only sends OTP, doesn't return token/user yet
       // Token and user are returned after OTP verification
->>>>>>> master
       return response.data;
     } catch (error) {
       console.error('Registration error:', error);
@@ -50,11 +41,6 @@ export const authService = {
   verifyRegistrationOTP: async (data) => {
     try {
       const response = await api.post('/auth/verify-registration', data);
-<<<<<<< HEAD
-      // Store the token
-      await AsyncStorage.setItem(TOKEN_KEY, token);
-      await AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
-=======
       // Store the token and user if provided
       if (response.data?.token) {
         await AsyncStorage.setItem(TOKEN_KEY, response.data.token);
@@ -62,7 +48,6 @@ export const authService = {
       if (response.data?.user) {
         await AsyncStorage.setItem(USER_KEY, JSON.stringify(response.data.user));
       }
->>>>>>> master
       return response.data;
     } catch (error) {
       console.error('OTP verification error:', error);
@@ -104,16 +89,12 @@ export const authService = {
       if (!token) return false;
 
       // Verify token with backend
-<<<<<<< HEAD
-      return await api.auth.verifyToken();
-=======
       try {
         const resp = await api.get('/auth/verify');
         return !!resp.data?.valid;
       } catch (e) {
         return false;
       }
->>>>>>> master
     } catch (error) {
       console.error('Auth check error:', error);
       return false;
@@ -167,5 +148,3 @@ export const authService = {
 };
 
 export default authService;
-
-
