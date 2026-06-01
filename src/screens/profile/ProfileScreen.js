@@ -20,17 +20,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import api, { auth, videos as videoApi, userService } from '../../config/api';
-<<<<<<< HEAD
-import { theme } from '../../config/theme';
-import { formatNumber } from '../../utils/formatters';
-import { useAuth } from '../../contexts/AuthContext';
-=======
 import { videoService } from '../../services/videoService';
 import { theme } from '../../config/theme';
 import { formatNumber } from '../../utils/formatters';
 import { useAuth } from '../../contexts/AuthContext';
 import VideoOptionsModal from '../../components/VideoOptionsModal';
->>>>>>> master
 
 const ProfileScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
@@ -76,11 +70,8 @@ const ProfileScreen = ({ navigation }) => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-<<<<<<< HEAD
-=======
   const [showVideoOptions, setShowVideoOptions] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
->>>>>>> master
   
   // Add refs to track loading states
   const isLoadingRef = useRef(false);
@@ -96,18 +87,10 @@ const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     const loadInitialData = async () => {
-<<<<<<< HEAD
-      console.log('[ProfileScreen] Starting initial data load, activeTab:', activeTab);
-=======
->>>>>>> master
       await Promise.all([
         fetchUserProfile(),
         fetchUserVideos(true)
       ]);
-<<<<<<< HEAD
-      console.log('[ProfileScreen] Initial data load complete');
-=======
->>>>>>> master
       isInitialMount.current = false;
     };
     loadInitialData();
@@ -120,11 +103,7 @@ const ProfileScreen = ({ navigation }) => {
       )?.params?.refresh;
       
       if (refresh) {
-<<<<<<< HEAD
-        console.log('[ProfileScreen] Screen focused with refresh param, activeTab:', activeTab);
-=======
         // Screen focused with refresh param
->>>>>>> master
         const refreshData = async () => {
           await Promise.all([
             fetchUserProfile(),
@@ -142,11 +121,7 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     if (!isInitialMount.current && user?._id && !loading && !isLoadingRef.current) {
       if (activeTab !== prevActiveTabRef.current) {
-<<<<<<< HEAD
-        console.log(`[ProfileScreen] Tab change detected - Previous: ${prevActiveTabRef.current}, New: ${activeTab}, IsInitialMount: ${isInitialMount.current}, IsLoading: ${isLoadingRef.current}`);
-=======
         // Tab change detected
->>>>>>> master
         setPage(prev => ({
           ...prev,
           [activeTab]: 1
@@ -205,22 +180,11 @@ const ProfileScreen = ({ navigation }) => {
 
   const fetchUserVideos = useCallback(async (refresh = false) => {
     if (!isMountedRef.current || !user?._id) {
-<<<<<<< HEAD
-      console.log(`[ProfileScreen] Fetch aborted - isMounted: ${isMountedRef.current}, userId: ${user?._id}`);
-=======
->>>>>>> master
       return;
     }
     
     try {
-<<<<<<< HEAD
-      console.log(`[ProfileScreen] Fetch attempt - Tab: ${activeTab}, Page: ${page[activeTab]}, Refresh: ${refresh}, InitialMount: ${isInitialMount.current}, Loading: ${isLoadingRef.current}`);
-      
       if (refresh) {
-        console.log(`[ProfileScreen] Refreshing ${activeTab} tab - Current page: ${page[activeTab]}, HasMore: ${hasMore[activeTab]}`);
-=======
-      if (refresh) {
->>>>>>> master
         setPage(prev => ({
           ...prev,
           [activeTab]: 1
@@ -241,10 +205,6 @@ const ProfileScreen = ({ navigation }) => {
 
       // Don't fetch if we're already loading or there are no more videos
       if (!hasMore[activeTab] || isLoadingRef.current) {
-<<<<<<< HEAD
-        console.log(`[ProfileScreen] Fetch skipped - HasMore: ${hasMore[activeTab]}, IsLoading: ${isLoadingRef.current}`);
-=======
->>>>>>> master
         return;
       }
 
@@ -252,10 +212,6 @@ const ProfileScreen = ({ navigation }) => {
       setLoadingMore(true);
       
       const currentPage = refresh ? 1 : page[activeTab];
-<<<<<<< HEAD
-      console.log(`[ProfileScreen] Fetching page ${currentPage} for ${activeTab} tab`);
-=======
->>>>>>> master
       
       // Set proper visibility and status filters based on active tab
       const params = {
@@ -287,11 +243,6 @@ const ProfileScreen = ({ navigation }) => {
         draftCount 
       } = response.data;
 
-<<<<<<< HEAD
-      console.log(`Received ${newVideos?.length || 0} videos, hasMore: ${moreAvailable}`);
-      
-=======
->>>>>>> master
       if (newVideos?.length) {
         // Update videos based on active tab
         if (activeTab === 'private') {
@@ -393,45 +344,6 @@ const ProfileScreen = ({ navigation }) => {
     });
   };
 
-<<<<<<< HEAD
-  const renderVideoItem = useCallback(({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.videoThumbnail,
-        {
-          width: THUMBNAIL_SIZE,
-          height: THUMBNAIL_SIZE * 1.5
-        }
-      ]}
-      onPress={() => handleVideoPress(item)}
-    >
-      <Image
-        source={{ uri: item.thumbnailUrl || item.videoUrl }}
-        style={styles.thumbnail}
-        resizeMode="cover"
-      />
-      {Platform.OS === 'ios' ? (
-        <BlurView intensity={30} style={styles.videoStats}>
-          <View style={styles.statRow}>
-            <FontAwesome5 name="heart" size={12} color="white" />
-            <Text style={styles.videoStatsText}>
-              {item.likesCount > 1000 ? `${(item.likesCount / 1000).toFixed(1)}K` : item.likesCount || 0}
-            </Text>
-          </View>
-        </BlurView>
-      ) : (
-        <View style={[styles.videoStats, { backgroundColor: 'rgba(0, 0, 0, 0.6)' }]}>
-          <View style={styles.statRow}>
-            <FontAwesome5 name="heart" size={12} color="white" />
-            <Text style={styles.videoStatsText}>
-              {item.likesCount > 1000 ? `${(item.likesCount / 1000).toFixed(1)}K` : item.likesCount || 0}
-            </Text>
-          </View>
-        </View>
-      )}
-    </TouchableOpacity>
-  ), [THUMBNAIL_SIZE, handleVideoPress]);
-=======
   const handleVideoOptions = (video) => {
     setSelectedVideo(video);
     setShowVideoOptions(true);
@@ -532,7 +444,6 @@ const ProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   ), [THUMBNAIL_SIZE, handleVideoPress, handleVideoOptions]);
->>>>>>> master
 
   const renderTabs = () => (
     <View style={styles.tabsContainer}>
@@ -656,10 +567,7 @@ const ProfileScreen = ({ navigation }) => {
             >
               <MaterialIcons name="settings" size={24} color={theme.colors.text} />
             </TouchableOpacity>
-<<<<<<< HEAD
-=======
             
->>>>>>> master
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={handleLogout}
@@ -777,16 +685,6 @@ const ProfileScreen = ({ navigation }) => {
               scrollEnabled={false}
               removeClippedSubviews={Platform.OS !== 'web'}
               initialNumToRender={Platform.select({
-<<<<<<< HEAD
-                web: 16,
-                default: 12
-              })}
-              maxToRenderPerBatch={Platform.select({
-                web: 8,
-                default: 6
-              })}
-              windowSize={5}
-=======
                 web: 12,
                 default: 6
               })}
@@ -796,7 +694,6 @@ const ProfileScreen = ({ navigation }) => {
               })}
               windowSize={3}
               getItemLayout={undefined}
->>>>>>> master
             />
         </View>
       </ScrollView>
@@ -844,8 +741,6 @@ const ProfileScreen = ({ navigation }) => {
           </LinearGradient>
         </View>
       </Modal>
-<<<<<<< HEAD
-=======
 
       {/* Video Options Modal */}
       <VideoOptionsModal
@@ -859,7 +754,6 @@ const ProfileScreen = ({ navigation }) => {
         onVideoDeleted={handleVideoDeleted}
         navigation={navigation}
       />
->>>>>>> master
     </View>
   );
 };
@@ -1085,13 +979,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
-<<<<<<< HEAD
-=======
   videoItemContainer: {
     position: 'relative',
     marginBottom: 10,
   },
->>>>>>> master
   videoThumbnail: {
     padding: 1,
     overflow: 'hidden',
@@ -1110,8 +1001,6 @@ const styles = StyleSheet.create({
       }
     })
   },
-<<<<<<< HEAD
-=======
   optionsButton: {
     position: 'absolute',
     top: 8,
@@ -1135,7 +1024,6 @@ const styles = StyleSheet.create({
     })
   },
 
->>>>>>> master
   thumbnail: {
     width: '100%',
     height: '100%',
@@ -1347,10 +1235,7 @@ const styles = StyleSheet.create({
   footerBanner: {
     marginVertical: 10,
   },
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 });
 
 export default ProfileScreen;
