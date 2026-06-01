@@ -1,12 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-<<<<<<< HEAD
-import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native';
-import Video from 'react-native-video';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import { getOptimalVideoQuality, getDeviceSpecificConfig } from '../utils/deviceUtils';
-
-const OptimizedVideo = ({ 
-=======
 import { View, StyleSheet, ActivityIndicator, Platform, TouchableOpacity, Text, Image } from 'react-native';
 import Video from 'react-native-video';
 import * as ScreenOrientation from 'expo-screen-orientation';
@@ -14,21 +6,12 @@ import { getOptimalVideoQuality, getDeviceSpecificConfig, getMemoryOptimizedVide
 import VideoSkeleton from './VideoSkeleton';
 
 const OptimizedVideo = ({
->>>>>>> master
   uri,
   style,
   shouldPlay = true,
   isLooping = true,
   onPlaybackStatusUpdate,
   onError,
-<<<<<<< HEAD
-  ...props 
-}) => {
-  const videoRef = useRef(null);
-  const [loading, setLoading] = useState(true);
-  const [quality, setQuality] = useState('low');
-  const [config, setConfig] = useState(null);
-=======
   video,
   showUserInfo = true,
   ...props
@@ -39,7 +22,6 @@ const OptimizedVideo = ({
   const [quality, setQuality] = useState(null);
   const [config, setConfig] = useState(null);
   const [memoryConfig, setMemoryConfig] = useState(null);
->>>>>>> master
 
   useEffect(() => {
     const initializeVideo = async () => {
@@ -65,8 +47,6 @@ const OptimizedVideo = ({
     initializeVideo();
   }, []);
 
-<<<<<<< HEAD
-=======
   // Initialize memory-optimized configuration
   useEffect(() => {
     const initializeMemoryConfig = async () => {
@@ -82,7 +62,6 @@ const OptimizedVideo = ({
   }, []);
 
 
->>>>>>> master
   const handlePlaybackStatusUpdate = (status) => {
     if (status.isLoaded) {
       setLoading(false);
@@ -96,12 +75,6 @@ const OptimizedVideo = ({
     onError?.(error);
   };
 
-<<<<<<< HEAD
-  // Apply quality settings based on device capabilities
-  const videoQualitySettings = {
-    low: {
-      resizeMode: Video.RESIZE_MODE_CONTAIN,
-=======
 
   // Apply quality settings based on device capabilities
   const getVideoQualitySettings = (quality) => {
@@ -109,34 +82,11 @@ const OptimizedVideo = ({
 
     return {
       resizeMode: Video.RESIZE_MODE_COVER,
->>>>>>> master
       useNativeControls: false,
       isMuted: false,
       volume: 1.0,
       rate: 1.0,
       shouldCorrectPitch: true,
-<<<<<<< HEAD
-      progressUpdateIntervalMillis: 500,
-    },
-    medium: {
-      resizeMode: Video.RESIZE_MODE_COVER,
-      useNativeControls: true,
-      isMuted: false,
-      volume: 1.0,
-      rate: 1.0,
-      shouldCorrectPitch: true,
-      progressUpdateIntervalMillis: 250,
-    },
-    high: {
-      resizeMode: Video.RESIZE_MODE_COVER,
-      useNativeControls: true,
-      isMuted: false,
-      volume: 1.0,
-      rate: 1.0,
-      shouldCorrectPitch: true,
-      progressUpdateIntervalMillis: 100,
-    },
-=======
       progressUpdateIntervalMillis: quality.bitrate > 2000000 ? 100 : 250, // Faster updates for higher quality
       maxBitRate: memoryConfig ? memoryConfig.maxBitRate : quality.bitrate,
       selectedVideoTrack: {
@@ -144,7 +94,6 @@ const OptimizedVideo = ({
         value: memoryConfig ? (memoryConfig.resolution === 360 ? 360 : (memoryConfig.resolution === 480 ? 480 : 720)) : quality.height
       }
     };
->>>>>>> master
   };
 
   return (
@@ -152,11 +101,7 @@ const OptimizedVideo = ({
       <View style={styles.videoWrapper}>
         {config && (
           <Video
-<<<<<<< HEAD
-            ref={videoRef}
-=======
             key={videoKey.current}
->>>>>>> master
             source={{ uri }}
             style={styles.video}
             resizeMode="cover"
@@ -164,15 +109,6 @@ const OptimizedVideo = ({
             paused={!shouldPlay}
             onLoad={handlePlaybackStatusUpdate}
             onError={handleError}
-<<<<<<< HEAD
-            bufferConfig={{
-              minBufferMs: 15000,
-              maxBufferMs: 50000,
-              bufferForPlaybackMs: 2500,
-              bufferForPlaybackAfterRebufferMs: 5000
-            }}
-            {...videoQualitySettings[quality]}
-=======
             bufferConfig={memoryConfig ? {
               minBufferMs: memoryConfig.minBufferMs,
               maxBufferMs: memoryConfig.maxBufferMs,
@@ -187,19 +123,12 @@ const OptimizedVideo = ({
               backBufferDurationMs: 2000
             }}
             {...getVideoQualitySettings(quality)}
->>>>>>> master
             {...props}
             // Device-specific optimizations
             posterSource={{ uri: `${uri}?thumb=1` }}
             posterResizeMode="cover"
           />
         )}
-<<<<<<< HEAD
-      </View>
-      {loading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#fff" />
-=======
 
       </View>
       {loading && (
@@ -210,7 +139,6 @@ const OptimizedVideo = ({
             showDescription={false}
             showActions={false}
           />
->>>>>>> master
         </View>
       )}
     </View>
@@ -248,13 +176,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.3)',
   },
-<<<<<<< HEAD
-=======
   skeletonContainer: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#000',
   },
->>>>>>> master
 });
 
 export default OptimizedVideo;
