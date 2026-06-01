@@ -15,8 +15,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
-<<<<<<< HEAD
-=======
 import { AppState, DeviceEventEmitter } from 'react-native';
 import { getOptimalVideoQuality, getMemoryOptimizedVideoConfig } from '../utils/deviceUtils';
 import videoPreloader from '../utils/videoPreloader';
@@ -24,7 +22,6 @@ import videoCache from '../utils/videoCache';
 import { VIDEO_CONFIG } from '../config/videoConfig';
 import performanceMonitor from '../utils/performanceMonitor';
 import VideoSkeleton from './VideoSkeleton';
->>>>>>> master
 
 // Get screen dimensions
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -56,8 +53,6 @@ const { width: VIDEO_WIDTH, height: VIDEO_HEIGHT } = getVideoDimensions();
 
 // Global state to track if user has interacted with any video
 let hasUserInteractedGlobally = false;
-<<<<<<< HEAD
-=======
 let lastInteractionTime = 0;
 const INTERACTION_TIMEOUT = 30000; // 30 seconds
 
@@ -76,7 +71,6 @@ if (Platform.OS === 'web' && typeof window !== 'undefined') {
     // localStorage not available
   }
 }
->>>>>>> master
 
 const VideoPlayer = ({ 
   uri, 
@@ -99,27 +93,20 @@ const VideoPlayer = ({
   const [showPlayIcon, setShowPlayIcon] = useState(false);
   const [videoDimensions, setVideoDimensions] = useState({ width: VIDEO_WIDTH, height: VIDEO_HEIGHT });
   const [showOverlay, setShowOverlay] = useState(false);
-<<<<<<< HEAD
-  const videoRef = useRef(null);
-=======
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
   const videoKey = useRef(0);
->>>>>>> master
   const playIconAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.5)).current;
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
   const [likeAnimations, setLikeAnimations] = useState([]);
   const likeAnimationRefs = useRef([]);
-<<<<<<< HEAD
-=======
   const retryTimeoutRef = useRef(null);
   const [quality, setQuality] = useState(null);
   const [sessionId, setSessionId] = useState(null);
   const [memoryConfig, setMemoryConfig] = useState(null);
   const lastTapTime = useRef(0);
->>>>>>> master
 
   // Gesture handler refs
   const singleTapRef = useRef(null);
@@ -127,9 +114,6 @@ const VideoPlayer = ({
 
   // Update overlay state when video becomes active
   useEffect(() => {
-<<<<<<< HEAD
-    if (Platform.OS === 'web' && !hasUserInteractedGlobally && isActive) {
-=======
     // Only show overlay on web if user hasn't interacted and video is active
     // Also check if interaction has timed out
     const currentTime = Date.now();
@@ -139,16 +123,11 @@ const VideoPlayer = ({
                              (currentTime - lastInteractionTime) < INTERACTION_TIMEOUT;
 
     if (shouldShowOverlay) {
->>>>>>> master
       setShowOverlay(true);
     } else {
       setShowOverlay(false);
     }
-<<<<<<< HEAD
-  }, [isActive]);
-=======
   }, [isActive, hasUserInteractedGlobally]);
->>>>>>> master
 
   // Update playing state when active state changes
   useEffect(() => {
@@ -158,8 +137,6 @@ const VideoPlayer = ({
     }
   }, [paused, isActive, isThumbnail, hasInteracted]);
 
-<<<<<<< HEAD
-=======
   // Cleanup retry timeout on unmount or URI change
   useEffect(() => {
     return () => {
@@ -180,7 +157,6 @@ const VideoPlayer = ({
     };
   }, [sessionId]);
 
->>>>>>> master
   useEffect(() => {
     const handleAppStateChange = (state) => {
       if (state === 'background') {
@@ -188,23 +164,6 @@ const VideoPlayer = ({
       }
     };
 
-<<<<<<< HEAD
-    const appStateSubscription = AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      appStateSubscription.remove();
-    };
-  }, []);
-
-  const handlePress = () => {
-    if (isThumbnail) return;
-    
-    if (Platform.OS === 'web' && !hasUserInteractedGlobally) {
-      hasUserInteractedGlobally = true;
-      setHasInteracted(true);
-      setShowOverlay(false);
-      setIsPlaying(true);
-=======
     const handleMemoryWarning = () => {
       console.log('Memory warning received - reducing video quality');
       // Force lower quality settings when memory is low
@@ -312,7 +271,6 @@ const VideoPlayer = ({
       } catch (e) {
         // localStorage not available
       }
->>>>>>> master
     } else {
       const newPlayingState = !isPlaying;
       setIsPlaying(newPlayingState);
@@ -321,12 +279,9 @@ const VideoPlayer = ({
   };
 
   const showPlayPauseAnimation = () => {
-<<<<<<< HEAD
-=======
     // Don't show play icon if user hasn't interacted yet (first interaction on web)
     if (Platform.OS === 'web' && !hasUserInteractedGlobally) return;
 
->>>>>>> master
     setShowPlayIcon(true);
     playIconAnim.setValue(0);
     scaleAnim.setValue(0.5);
@@ -338,17 +293,10 @@ const VideoPlayer = ({
           duration: 200,
           useNativeDriver: false,
         }),
-<<<<<<< HEAD
-        Animated.delay(500),
-        Animated.timing(playIconAnim, {
-          toValue: 0,
-          duration: 200,
-=======
         Animated.delay(600), // Slightly longer delay
         Animated.timing(playIconAnim, {
           toValue: 0,
           duration: 300,
->>>>>>> master
           useNativeDriver: false,
         }),
       ]),
@@ -366,8 +314,6 @@ const VideoPlayer = ({
   const handleLoadStart = () => {
     setIsLoading(true);
     setError(null);
-<<<<<<< HEAD
-=======
 
     // Start performance monitoring
     if (uri && video) {
@@ -377,15 +323,12 @@ const VideoPlayer = ({
       performanceMonitor.recordLoadStart(newSessionId);
     }
 
->>>>>>> master
     onLoadStart?.();
   };
 
   const handleLoad = (event) => {
     setIsLoading(false);
     setError(null);
-<<<<<<< HEAD
-=======
 
     // Record load completion in performance monitor
     if (sessionId) {
@@ -414,17 +357,10 @@ const VideoPlayer = ({
       });
     }
 
->>>>>>> master
     onLoad?.(event);
   };
 
   const handleError = (err) => {
-<<<<<<< HEAD
-    setIsLoading(false);
-    setError(err);
-    console.error('Video playback error:', err);
-    onError?.(err);
-=======
     console.error('Video playback error:', err);
 
     // Record error in performance monitor
@@ -456,7 +392,6 @@ const VideoPlayer = ({
       setIsRetrying(false);
       onError?.(err);
     }
->>>>>>> master
   };
 
   // Update dimensions on layout changes
@@ -479,23 +414,15 @@ const VideoPlayer = ({
 
   // Handle single tap (play/pause)
   const handleSingleTap = (event) => {
-<<<<<<< HEAD
-    if (event.nativeEvent.state === State.ACTIVE) {
-=======
     if (event.nativeEvent.state === State.END) {
       // Only trigger on END state to avoid conflicts with double tap
->>>>>>> master
       handlePress();
     }
   };
 
   // Handle double tap (like)
   const handleDoubleTap = (event) => {
-<<<<<<< HEAD
-    if (event.nativeEvent.state === State.ACTIVE) {
-=======
     if (event.nativeEvent.state === State.END) {
->>>>>>> master
       if (onLike) {
         onLike();
         animateLike();
@@ -569,35 +496,23 @@ const VideoPlayer = ({
     });
   };
 
-<<<<<<< HEAD
-=======
 
->>>>>>> master
   return (
     <View style={[styles.container, { width: videoDimensions.width, height: videoDimensions.height }, style]}>
       <TapGestureHandler
         ref={doubleTapRef}
         onHandlerStateChange={handleDoubleTap}
         numberOfTaps={2}
-<<<<<<< HEAD
-        maxDelayMs={300}
-        maxDurationMs={300}
-=======
         maxDelayMs={250}
         maxDurationMs={250}
->>>>>>> master
       >
         <TapGestureHandler
           ref={singleTapRef}
           onHandlerStateChange={handleSingleTap}
           numberOfTaps={1}
           waitFor={doubleTapRef}
-<<<<<<< HEAD
-          maxDelayMs={150}
-=======
           maxDelayMs={200}
           maxDurationMs={200}
->>>>>>> master
         >
           <Animated.View style={styles.videoWrapper}>
         {(poster && !isPlaying) && (
@@ -609,26 +524,6 @@ const VideoPlayer = ({
         )}
         
         <Video
-<<<<<<< HEAD
-          ref={videoRef}
-          source={{ uri }}
-          style={[styles.video, { opacity: (poster && !isPlaying) ? 0 : 1 }]}
-          resizeMode={resizeMode}
-          repeat={!isThumbnail}
-          paused={!isPlaying || showOverlay}
-          onLoadStart={handleLoadStart}
-          onLoad={handleLoad}
-          onError={handleError}
-          posterResizeMode={resizeMode}
-          muted={isThumbnail}
-          playInBackground={false}
-          playWhenInactive={false}
-          ignoreSilentSwitch="ignore"
-        />
-
-        {/* Click to Play Overlay */}
-        {showOverlay && (
-=======
            key={videoKey.current}
            source={{ uri }}
            style={[styles.video, { opacity: (poster && !isPlaying) ? 0 : 1 }]}
@@ -664,7 +559,6 @@ const VideoPlayer = ({
 
        {/* Click to Play Overlay */}
        {showOverlay && (
->>>>>>> master
           <View style={styles.overlay}>
             <TouchableOpacity
               style={styles.overlayButton}
@@ -677,21 +571,6 @@ const VideoPlayer = ({
         )}
 
         {isLoading && (
-<<<<<<< HEAD
-          <View style={[styles.loadingContainer, { backgroundColor: 'rgba(0, 0, 0, 0.3)' }]}>
-            <ActivityIndicator color="#fff" size="large" />
-          </View>
-        )}
-
-        {error && (
-          <View style={[styles.loadingContainer, { backgroundColor: 'rgba(0, 0, 0, 0.7)' }]}>
-            <Ionicons name="alert-circle" size={40} color="#ff4747" />
-            <Text style={{ color: '#fff', fontSize: 14, textAlign: 'center', marginTop: 10 }}>
-              {error.message || 'Failed to load video'}
-            </Text>
-          </View>
-        )}
-=======
           <View style={styles.skeletonContainer}>
             <VideoSkeleton
               showAvatar={false}
@@ -725,7 +604,6 @@ const VideoPlayer = ({
              </Text>
            </View>
          )}
->>>>>>> master
 
         {showPlayIcon && !isThumbnail && (
           <Animated.View
@@ -842,13 +720,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-<<<<<<< HEAD
-=======
   skeletonContainer: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#000',
   },
->>>>>>> master
   errorContainer: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
@@ -900,9 +775,4 @@ const styles = StyleSheet.create({
   },
 });
 
-<<<<<<< HEAD
-import { AppState } from 'react-native';
-
-=======
->>>>>>> master
 export default VideoPlayer;
