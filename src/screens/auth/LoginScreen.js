@@ -430,10 +430,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-<<<<<<< HEAD
-    pointerEvents: 'none',
-=======
->>>>>>> master
   },
   input: {
     flex: 1,
@@ -507,16 +503,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     zIndex: 1000,
-<<<<<<< HEAD
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-=======
     ...Platform.select({
       web: {
         boxShadow: '0px 2px 3.84px rgba(0, 0, 0, 0.25)'
@@ -532,7 +518,6 @@ const styles = StyleSheet.create({
         elevation: 5,
       }
     })
->>>>>>> master
   },
   errorNotificationText: {
     color: '#fff',
@@ -551,16 +536,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     alignItems: 'center',
-<<<<<<< HEAD
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-=======
     ...Platform.select({
       web: {
         boxShadow: '0px 2px 3.84px rgba(0, 0, 0, 0.25)'
@@ -576,7 +551,6 @@ const styles = StyleSheet.create({
         elevation: 5,
       }
     })
->>>>>>> master
   },
   successIconContainer: {
     width: 80,
