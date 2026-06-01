@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
-=======
 import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
->>>>>>> master
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import FeedScreen from '../screens/main/FeedScreen';
@@ -23,15 +17,11 @@ import FollowingScreen from '../screens/profile/FollowingScreen';
 import ChatScreen from '../screens/messaging/ChatScreen';
 import ChatListScreen from '../screens/messaging/ChatListScreen';
 import DirectMessagingScreen from '../screens/messaging/DirectMessagingScreen';
-<<<<<<< HEAD
-import { theme } from '../config/theme';
-=======
 import NotificationBadge from '../components/shared/NotificationBadge';
 import { theme } from '../config/theme';
 import { notificationService } from '../services/notificationService';
 import socketService from '../services/socketService';
 import { useAuth } from '../contexts/AuthContext';
->>>>>>> master
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -101,8 +91,6 @@ const HomeNavigator = () => {
 };
 
 const MainTabNavigator = () => {
-<<<<<<< HEAD
-=======
   const { user } = useAuth();
   
   // 🔔 Badge state management
@@ -185,7 +173,6 @@ const MainTabNavigator = () => {
     };
   }, [user]);
 
->>>>>>> master
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -198,9 +185,6 @@ const MainTabNavigator = () => {
             case 'Home':
               iconName = 'home';
               IconComponent = MaterialIcons;
-<<<<<<< HEAD
-              break;
-=======
               
               // 🔔 Show chat count badge on Home tab (where ChatList is accessible)
               return (
@@ -215,7 +199,6 @@ const MainTabNavigator = () => {
                 </View>
               );
               
->>>>>>> master
             case 'Discover':
               iconName = focused ? 'search' : 'search';
               IconComponent = MaterialIcons;
@@ -232,9 +215,6 @@ const MainTabNavigator = () => {
             case 'Inbox':
               iconName = focused ? 'mail' : 'mail-outline';
               IconComponent = MaterialIcons;
-<<<<<<< HEAD
-              break;
-=======
               
               // 🔔 Show unread indicator on Inbox tab (for likes, comments, follows, etc.)
               return (
@@ -249,7 +229,6 @@ const MainTabNavigator = () => {
                 </View>
               );
               
->>>>>>> master
             case 'Profile':
               iconName = focused ? 'person' : 'person-outline';
               IconComponent = MaterialIcons;
@@ -328,14 +307,11 @@ const styles = StyleSheet.create({
     borderTopColor: '#00F2EA',
     borderBottomColor: '#FF0050',
   },
-<<<<<<< HEAD
-=======
   iconContainer: {
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
   },
->>>>>>> master
 });
 
 export default MainTabNavigator;
