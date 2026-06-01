@@ -16,10 +16,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-<<<<<<< HEAD
-=======
 import { useAuth } from '../../contexts/AuthContext';
->>>>>>> master
 import VideoPlayer from '../../components/VideoPlayer';
 import VideoControls from '../../components/VideoControls';
 import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -29,35 +26,18 @@ import { videoService } from '../../services/videoService';
 import { messageService } from '../../services/messageService';
 import api from '../../config/api';
 import axios from 'axios';
-<<<<<<< HEAD
-=======
 import optimizedVideoPreloader from '../../utils/optimizedVideoPreloader';
->>>>>>> master
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-<<<<<<< HEAD
-// Mobile-like aspect ratio (9:16 like TikTok)
-=======
-// Mobile-like aspect ratio (9:16 like TicToc)
->>>>>>> master
+// Mobile-like aspect ratio (9:16 like Short-X)
 const ASPECT_RATIO = 9/16;
 const VIDEO_HEIGHT = Platform.OS === 'web' ? Math.min(SCREEN_HEIGHT * 0.9, 900) : SCREEN_HEIGHT;
 const VIDEO_WIDTH = Platform.OS === 'web' 
   ? VIDEO_HEIGHT * ASPECT_RATIO // Calculate width based on height for web
   : SCREEN_WIDTH;
 
-<<<<<<< HEAD
-// Add these constants at the top
-const PRELOAD_AHEAD = 5; // Number of videos to preload ahead
-const MAX_CACHE_SIZE = 30; // Maximum number of videos to keep in cache
-
-// Add these memory management constants
-const MAX_CONCURRENT_LOADS = 2;
-const MEMORY_BUFFER_SIZE = 3; // Keep only 3 videos in memory
-const CHUNK_SIZE = 1024 * 1024; // 1MB chunks for streaming
-=======
 // Optimized constants for better performance
 const PRELOAD_AHEAD = 3; // Reduced to 3 videos for faster loading
 const MAX_CACHE_SIZE = 15; // Reduced cache size to prevent memory issues
@@ -65,7 +45,6 @@ const MAX_CONCURRENT_LOADS = 1; // Single concurrent load for stability
 const MEMORY_BUFFER_SIZE = 2; // Keep only 2 videos in memory
 const CHUNK_SIZE = 512 * 1024; // 512KB chunks for faster streaming
 const VIDEO_LOAD_TIMEOUT = 3000; // 3 second timeout for video loads
->>>>>>> master
 
 // Create a memoized VideoPlayer component
 const MemoizedVideoPlayer = memo(({ 
@@ -210,10 +189,7 @@ const VideoItem = memo(({
 
 const FeedScreen = () => {
   const [activeTab, setActiveTab] = useState('for-you');
-<<<<<<< HEAD
-=======
   const [isTabSwitching, setIsTabSwitching] = useState(false);
->>>>>>> master
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -240,10 +216,7 @@ const FeedScreen = () => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
   const isFocused = useIsFocused();
-<<<<<<< HEAD
-=======
   const { logout } = useAuth();
->>>>>>> master
 
   useEffect(() => {
     setIsScreenFocused(isFocused);
@@ -251,8 +224,6 @@ const FeedScreen = () => {
     if (!isFocused) {
       setIsPaused(true);
       console.log('[FeedScreen] Screen lost focus, pausing video');
-<<<<<<< HEAD
-=======
 
       // Clear video cache when screen loses focus to free memory
       videoCache.current.clear();
@@ -261,7 +232,6 @@ const FeedScreen = () => {
 
       // Force garbage collection if available
       if (global.gc) global.gc();
->>>>>>> master
     } else {
       setIsPaused(false);
       console.log('[FeedScreen] Screen gained focus, resuming video');
@@ -278,17 +248,6 @@ const FeedScreen = () => {
 
   const preloadVideo = useCallback(async (videoUrl, thumbnailUrl, priority = 1) => {
     if (!videoUrl || preloadingRef.current.has(videoUrl)) return;
-<<<<<<< HEAD
-    
-    try {
-      preloadingRef.current.add(videoUrl);
-      
-      // Clean up old videos from cache if we exceed the buffer size
-      if (videoCache.current.size >= MEMORY_BUFFER_SIZE) {
-        const oldestKey = videoCache.current.keys().next().value;
-        videoCache.current.delete(oldestKey);
-        
-=======
 
     try {
       preloadingRef.current.add(videoUrl);
@@ -302,7 +261,6 @@ const FeedScreen = () => {
           videoCache.current.delete(key);
         });
 
->>>>>>> master
         // Force garbage collection if available
         if (global.gc) global.gc();
       }
@@ -310,31 +268,15 @@ const FeedScreen = () => {
       // Only preload thumbnail for non-active videos
       if (priority > 1) {
         if (thumbnailUrl) {
-<<<<<<< HEAD
-          await Image.prefetch(thumbnailUrl);
-=======
           try {
             await Image.prefetch(thumbnailUrl);
           } catch (thumbnailError) {
             console.warn('Thumbnail preload failed:', thumbnailError);
           }
->>>>>>> master
         }
         return;
       }
 
-<<<<<<< HEAD
-      // Lightweight HEAD request to prepare video
-      await fetch(videoUrl, {
-        method: 'HEAD',
-        headers: {
-          'Range': `bytes=0-${CHUNK_SIZE}`
-        }
-      });
-
-      videoCache.current.set(videoUrl, true);
-      
-=======
       // Lightweight HEAD request to prepare video with timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
@@ -365,7 +307,6 @@ const FeedScreen = () => {
         clearTimeout(timeoutId);
       }
 
->>>>>>> master
     } catch (error) {
       console.warn('Preload failed:', error);
     } finally {
@@ -379,26 +320,6 @@ const FeedScreen = () => {
     const currentIndex = viewableItems[0].index;
     setActiveVideoIndex(currentIndex);
     
-<<<<<<< HEAD
-    // Clear existing preload queue
-    setPreloadQueue([]);
-    
-    // Create preload queue with priorities
-    const newPreloadQueue = [];
-    
-    for (let i = 1; i <= PRELOAD_AHEAD; i++) {
-      const nextIndex = currentIndex + i;
-      if (nextIndex < videos.length) {
-        newPreloadQueue.push({
-          videoUrl: videos[nextIndex].videoUrl,
-          thumbnailUrl: videos[nextIndex].thumbnailUrl,
-          priority: PRELOAD_AHEAD - i + 1 // Higher priority for closer videos
-        });
-      }
-    }
-    
-    setPreloadQueue(newPreloadQueue);
-=======
     // Use optimized preloader for better performance
     for (let i = 1; i <= PRELOAD_AHEAD; i++) {
       const nextIndex = currentIndex + i;
@@ -414,29 +335,10 @@ const FeedScreen = () => {
         );
       }
     }
->>>>>>> master
   }).current;
 
   useEffect(() => {
     if (preloadQueue.length === 0) return;
-<<<<<<< HEAD
-    
-    const processQueue = async () => {
-      // Process items in parallel with a concurrency limit
-      const concurrentLoads = 2;
-      
-      for (let i = 0; i < preloadQueue.length; i += concurrentLoads) {
-        const batch = preloadQueue.slice(i, i + concurrentLoads);
-        await Promise.all(
-          batch.map(item => 
-            preloadVideo(item.videoUrl, item.thumbnailUrl, item.priority)
-          )
-        );
-      }
-    };
-    
-    processQueue();
-=======
 
     const processQueue = async () => {
       // Process items sequentially to avoid overwhelming the network
@@ -457,7 +359,6 @@ const FeedScreen = () => {
     // Add small delay to prevent rapid queue processing
     const timeoutId = setTimeout(processQueue, 100);
     return () => clearTimeout(timeoutId);
->>>>>>> master
   }, [preloadQueue, preloadVideo]);
 
   const renderVideo = useCallback(({ item, index }) => (
@@ -481,27 +382,16 @@ const FeedScreen = () => {
       setLoading(true);
       setError(null);
       setPage(1); // Reset page number
-<<<<<<< HEAD
-      
-      // Get video ID from URL or route params
-      const videoId = route.params?.videoId;
-      
-=======
 
       // Get video ID from URL or route params
       const videoId = route.params?.videoId;
 
->>>>>>> master
       if (videoId) {
         console.log('Loading shared video:', videoId);
         try {
           // First fetch the shared video details
           const videoResponse = await api.get(`/videos/${videoId}`);
-<<<<<<< HEAD
-          
-=======
 
->>>>>>> master
           if (!videoResponse.data.success) {
             setError('Video not found');
             return;
@@ -516,21 +406,13 @@ const FeedScreen = () => {
               sharedVideoId: videoId
             }
           });
-<<<<<<< HEAD
-          
-=======
 
->>>>>>> master
           if (feedResponse.data.success) {
             if (feedResponse.data.videos && feedResponse.data.videos.length > 0) {
               setVideos(feedResponse.data.videos);
               setPage(2);
               setHasMore(feedResponse.data.hasMore);
-<<<<<<< HEAD
-              
-=======
 
->>>>>>> master
               // Ensure we're at the top to show shared video
               flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
             } else {
@@ -541,9 +423,6 @@ const FeedScreen = () => {
           }
         } catch (err) {
           console.error('Error loading shared video:', err);
-<<<<<<< HEAD
-          setError(err.response?.data?.message || 'Failed to load shared video');
-=======
 
           // Handle backend connectivity issues gracefully
           if (err.isBackendError || err.isNetworkError) {
@@ -554,7 +433,6 @@ const FeedScreen = () => {
           } else {
             setError(err.response?.data?.message || 'Failed to load shared video');
           }
->>>>>>> master
           return;
         }
       } else {
@@ -567,15 +445,9 @@ const FeedScreen = () => {
               limit: 10
             }
           });
-<<<<<<< HEAD
-          
-          console.log('Feed response:', response.data);
-          
-=======
 
           console.log('Feed response:', response.data);
 
->>>>>>> master
           if (response.data.success) {
             if (response.data.videos && response.data.videos.length > 0) {
               setVideos(response.data.videos);
@@ -593,11 +465,6 @@ const FeedScreen = () => {
           }
         } catch (err) {
           console.error('Error loading feed:', err);
-<<<<<<< HEAD
-          if (err.response?.status === 401) {
-            // Handle unauthorized error
-            navigation.navigate('Login');
-=======
 
           // Handle backend connectivity issues gracefully
           if (err.isBackendError || err.isNetworkError) {
@@ -605,7 +472,6 @@ const FeedScreen = () => {
           } else if (err.response?.status === 401) {
             // Handle unauthorized error - logout user
             logout();
->>>>>>> master
           } else {
             setError(err.response?.data?.message || 'Failed to load feed');
           }
@@ -613,10 +479,6 @@ const FeedScreen = () => {
       }
     } catch (error) {
       console.error('Error in loadInitialData:', error);
-<<<<<<< HEAD
-      if (error.response?.status === 401) {
-        navigation.navigate('Login');
-=======
 
       // Handle backend connectivity issues gracefully
       if (error.isBackendError || error.isNetworkError) {
@@ -624,7 +486,6 @@ const FeedScreen = () => {
       } else if (error.response?.status === 401) {
         // Handle unauthorized error - logout user
         logout();
->>>>>>> master
       } else {
         setError(error.response?.data?.message || 'Failed to load content');
       }
@@ -635,18 +496,12 @@ const FeedScreen = () => {
 
   // Load initial data when component mounts or activeTab changes
   useEffect(() => {
-<<<<<<< HEAD
-    loadInitialData();
-    fetchUnreadCount();
-  }, [route.params?.videoId, activeTab]);
-=======
     // Only load data if we're not in the middle of a tab switch
     if (!isTabSwitching) {
       loadInitialData();
       fetchUnreadCount();
     }
   }, [route.params?.videoId, activeTab, isTabSwitching]);
->>>>>>> master
 
   useEffect(() => {
     // Handle navigation params for direct video viewing
@@ -692,11 +547,7 @@ const FeedScreen = () => {
   // Handle pagination
   const fetchMoreVideos = async () => {
     if (loading || !hasMore) return;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> master
     try {
       setLoading(true);
       const feedEndpoint = activeTab === 'following' ? '/videos/feed/following' : '/videos/feed/foryou';
@@ -706,15 +557,9 @@ const FeedScreen = () => {
           limit: 10
         }
       });
-<<<<<<< HEAD
-      
-      console.log('Fetch more response:', response.data);
-      
-=======
 
       console.log('Fetch more response:', response.data);
 
->>>>>>> master
       if (response.data.success) {
         if (response.data.videos && response.data.videos.length > 0) {
           setVideos(prev => [...prev, ...response.data.videos]);
@@ -728,10 +573,6 @@ const FeedScreen = () => {
       }
     } catch (error) {
       console.error('Error fetching more videos:', error);
-<<<<<<< HEAD
-      if (error.response?.status === 401) {
-        navigation.navigate('Login');
-=======
 
       // Handle backend connectivity issues gracefully
       if (error.isBackendError || error.isNetworkError) {
@@ -740,7 +581,6 @@ const FeedScreen = () => {
       } else if (error.response?.status === 401) {
         // Handle unauthorized error - logout user
         logout();
->>>>>>> master
       } else {
         Alert.alert('Error', error.response?.data?.message || 'Failed to load more videos');
       }
@@ -754,11 +594,7 @@ const FeedScreen = () => {
     try {
       console.log('Handling like for video:', videoId);
       const response = await api.put(`/videos/${videoId}/like`);
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> master
       if (response.data.success) {
         setVideos(prevVideos =>
           prevVideos.map(video =>
@@ -774,9 +610,6 @@ const FeedScreen = () => {
       }
     } catch (error) {
       console.error('Error toggling like:', error);
-<<<<<<< HEAD
-      Alert.alert('Error', 'Failed to like video');
-=======
 
       // Handle backend connectivity issues gracefully
       if (error.isBackendError || error.isNetworkError) {
@@ -786,7 +619,6 @@ const FeedScreen = () => {
         // For other errors, you might want to show a toast notification
         console.error('Like action failed:', error.response?.data?.message || error.message);
       }
->>>>>>> master
     }
   };
 
@@ -801,9 +633,6 @@ const FeedScreen = () => {
         Alert.alert('Error', 'Failed to load comments');
       }
     } catch (error) {
-<<<<<<< HEAD
-      Alert.alert('Error', error.response?.data?.message || 'Failed to load comments');
-=======
       console.error('Error loading comments:', error);
 
       // Handle backend connectivity issues gracefully
@@ -812,7 +641,6 @@ const FeedScreen = () => {
       } else {
         Alert.alert('Error', error.response?.data?.message || 'Failed to load comments');
       }
->>>>>>> master
     }
   };
 
@@ -844,30 +672,6 @@ const FeedScreen = () => {
     }
   };
 
-<<<<<<< HEAD
-  // Handle share
-  const handleShare = async (video) => {
-    try {
-      const result = await Share.share({
-        message: `Check out this video on Short X!`,
-        url: video.videoUrl,
-      });
-      
-      if (result.action === Share.sharedAction) {
-        await api.post(`/videos/${video._id}/share`);
-        // Update video share count locally
-        setVideos(prevVideos =>
-          prevVideos.map(v =>
-            v._id === video._id
-              ? { ...v, sharesCount: (v.sharesCount || 0) + 1 }
-              : v
-          )
-        );
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to share video');
-    }
-=======
   // Handle share: only update local state when VideoControls reports success
   const handleShare = async (video) => {
     try {
@@ -879,7 +683,6 @@ const FeedScreen = () => {
         )
       );
     } catch (_) {}
->>>>>>> master
   };
 
   // Handle profile navigation
@@ -917,9 +720,6 @@ const FeedScreen = () => {
       }
     } catch (error) {
       console.error('Error following user:', error);
-<<<<<<< HEAD
-      setError(error.response?.data?.message || 'Failed to follow user');
-=======
 
       // Handle backend connectivity issues gracefully
       if (error.isBackendError || error.isNetworkError) {
@@ -928,7 +728,6 @@ const FeedScreen = () => {
       } else {
         setError(error.response?.data?.message || 'Failed to follow user');
       }
->>>>>>> master
     }
   };
 
@@ -965,8 +764,6 @@ const FeedScreen = () => {
     }
   }, [activeTab]);
 
-<<<<<<< HEAD
-=======
   // Handle tab switching with proper cleanup and loading state
   const handleTabSwitch = useCallback(async (newTab) => {
     if (newTab === activeTab || isTabSwitching) return;
@@ -1002,7 +799,6 @@ const FeedScreen = () => {
     }
   }, [activeTab, isTabSwitching]);
 
->>>>>>> master
   const handleRetry = async () => {
     setError(null);
     setVideos([]); // Clear existing videos
@@ -1039,26 +835,6 @@ const FeedScreen = () => {
         </TouchableOpacity>
 
         <View style={styles.tabsContainer}>
-<<<<<<< HEAD
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'following' && styles.activeTab]}
-            onPress={() => setActiveTab('following')}
-          >
-            <Text style={[styles.tabText, activeTab === 'following' && styles.activeTabText]}>
-              Following
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'for-you' && styles.activeTab]}
-            onPress={() => setActiveTab('for-you')}
-          >
-            <Text style={[styles.tabText, activeTab === 'for-you' && styles.activeTabText]}>
-              For You
-            </Text>
-          </TouchableOpacity>
-        </View>
-=======
            <TouchableOpacity
              style={[styles.tab, activeTab === 'following' && styles.activeTab]}
              onPress={() => handleTabSwitch('following')}
@@ -1085,7 +861,6 @@ const FeedScreen = () => {
              )}
            </TouchableOpacity>
          </View>
->>>>>>> master
 
         <View style={styles.rightButtons}>
           <TouchableOpacity style={styles.chatButton} onPress={handleChat}>
@@ -1156,11 +931,6 @@ const FeedScreen = () => {
       )}
 
       {/* Loading indicator */}
-<<<<<<< HEAD
-      {loading && !refreshing && (
-        <View style={[styles.loadingContainer, { height: SCREEN_HEIGHT - 90 }]}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-=======
       {(loading || isTabSwitching) && !refreshing && (
         <View style={[styles.loadingContainer, { height: SCREEN_HEIGHT - 90 }]}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -1169,7 +939,6 @@ const FeedScreen = () => {
               Switching to {activeTab === 'following' ? 'Following' : 'For You'}...
             </Text>
           )}
->>>>>>> master
         </View>
       )}
     </SafeAreaView>
@@ -1259,15 +1028,12 @@ const styles = StyleSheet.create({
   activeTabText: {
     color: 'white',
   },
-<<<<<<< HEAD
-=======
   tabLoader: {
     position: 'absolute',
     right: -20,
     top: '50%',
     transform: [{ translateY: -8 }],
   },
->>>>>>> master
   videoContainer: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
@@ -1369,15 +1135,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
-<<<<<<< HEAD
-=======
   loadingText: {
     color: 'white',
     fontSize: 14,
     marginTop: 10,
     fontWeight: '500',
   },
->>>>>>> master
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
