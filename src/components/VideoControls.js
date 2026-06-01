@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
 import React, { useState, useEffect } from 'react';
->>>>>>> master
 import {
   View,
   Text,
@@ -19,13 +15,9 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { theme } from '../config/theme';
 import { formatNumber } from '../utils/format';
 import CommentModal from './CommentModal';
-<<<<<<< HEAD
-import { FRONTEND_URL } from '../config/constants';
-=======
 import { shareContent, generateShareUrl } from '../utils/urlHandler';
 import api from '../config/api';
 import { userService } from '../services/userService';
->>>>>>> master
 
 // Import default avatar from assets
 const defaultAvatarImage = require('../../assets/default-avatar.png');
@@ -42,11 +34,8 @@ const VideoControls = ({
 }) => {
   const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
-<<<<<<< HEAD
-=======
   const [isFollowing, setIsFollowing] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
->>>>>>> master
   const [, forceUpdate] = useState({});
 
   if (!video || !video.user) {
@@ -71,54 +60,6 @@ const VideoControls = ({
 
     try {
       setIsSharing(true);
-<<<<<<< HEAD
-      const shareUrl = `${FRONTEND_URL}/video/${videoId}`;
-      const shareMessage = description
-        ? `${description}\n\nWatch this video on Short X: ${shareUrl}`
-        : `Watch this video on Short X: ${shareUrl}`;
-
-      // For web platform
-      if (Platform.OS === 'web' && navigator.share) {
-        try {
-          await navigator.share({
-            title: 'Share Video',
-            text: shareMessage,
-            url: shareUrl
-          });
-          if (onShare) onShare(videoId);
-        } catch (error) {
-          if (error.name !== 'AbortError') {
-            console.error('Web share error:', error);
-            Alert.alert('Error', 'Failed to share video');
-          }
-        }
-        return;
-      }
-
-      // For mobile platforms
-      const result = await Share.share(
-        {
-          message: shareMessage,
-          url: shareUrl, // iOS only
-          title: 'Share Video' // Android only
-        },
-        {
-          dialogTitle: 'Share Video', // Android only
-          subject: 'Share Video', // iOS only
-          tintColor: theme.colors.primary // iOS only
-        }
-      );
-
-      if (result.action === Share.sharedAction) {
-        // Call onShare callback if provided
-        if (onShare) {
-          onShare(videoId);
-        }
-      }
-    } catch (error) {
-      console.error('Error sharing video:', error);
-      Alert.alert('Error', 'Failed to share video');
-=======
       
       // Generate share data with video information
       const shareData = {
@@ -162,7 +103,6 @@ const VideoControls = ({
     } catch (error) {
       console.error('Error sharing video:', error);
       Alert.alert('Error', 'Failed to share video. Please try again.');
->>>>>>> master
     } finally {
       setIsSharing(false);
     }
@@ -190,13 +130,6 @@ const VideoControls = ({
     }
   };
 
-<<<<<<< HEAD
-  return (
-    <View style={styles.container}>
-      <View style={styles.rightControls}>
-        <TouchableOpacity 
-          style={styles.userContainer} 
-=======
   // Load follow status when video changes
   useEffect(() => {
     const loadFollowStatus = async () => {
@@ -278,7 +211,6 @@ const VideoControls = ({
       <View style={styles.rightControls}>
         <TouchableOpacity
           style={styles.userContainer}
->>>>>>> master
           onPress={onUserPress}
           disabled={!onUserPress}
         >
@@ -286,10 +218,7 @@ const VideoControls = ({
             source={user.avatar ? { uri: user.avatar } : defaultAvatarImage}
             style={styles.userAvatar}
             defaultSource={defaultAvatarImage}
-<<<<<<< HEAD
-=======
             resizeMode="cover"
->>>>>>> master
           />
         </TouchableOpacity>
 
@@ -342,9 +271,6 @@ const VideoControls = ({
       </View>
 
       <View style={styles.bottomSection}>
-<<<<<<< HEAD
-        <Text style={styles.username}>@{user.username}</Text>
-=======
         <View style={styles.userInfoRow}>
           <Text style={styles.username}>@{user.username}</Text>
           <TouchableOpacity
@@ -367,7 +293,6 @@ const VideoControls = ({
             )}
           </TouchableOpacity>
         </View>
->>>>>>> master
         {description ? (
           <Text style={styles.description} numberOfLines={2}>
             {description}
@@ -420,10 +345,6 @@ const styles = StyleSheet.create({
   userAvatar: {
     width: '100%',
     height: '100%',
-<<<<<<< HEAD
-    resizeMode: 'cover',
-=======
->>>>>>> master
   },
   actionButton: {
     alignItems: 'center',
@@ -440,13 +361,6 @@ const styles = StyleSheet.create({
     left: 10,
     right: 80,
   },
-<<<<<<< HEAD
-  username: {
-    color: 'white',
-    fontWeight: 'bold',
-    marginBottom: 4,
-    fontSize: 16,
-=======
   userInfoRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -458,7 +372,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     flex: 1,
->>>>>>> master
   },
   description: {
     color: 'white',
@@ -472,8 +385,6 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 4,
   },
-<<<<<<< HEAD
-=======
   followButton: {
     backgroundColor: '#ff2d55',
     paddingHorizontal: 16,
@@ -497,7 +408,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
->>>>>>> master
 });
 
 export default VideoControls;
