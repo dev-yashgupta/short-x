@@ -10,11 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-<<<<<<< HEAD
-import { useNavigation } from '@react-navigation/native';
-=======
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
->>>>>>> master
 import { theme } from '../../config/theme';
 import { notificationService } from '../../services/notificationService';
 import { formatDistanceToNow } from 'date-fns';
@@ -134,8 +130,6 @@ const NotificationsScreen = () => {
     fetchNotifications();
   }, []);
 
-<<<<<<< HEAD
-=======
   // 🔔 Clear inbox badge when user visits notifications
   useFocusEffect(
     useCallback(() => {
@@ -144,7 +138,6 @@ const NotificationsScreen = () => {
     }, [])
   );
 
->>>>>>> master
   const handleRefresh = async () => {
     setRefreshing(true);
     setPage(1);
