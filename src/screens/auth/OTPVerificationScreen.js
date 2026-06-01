@@ -10,10 +10,7 @@ import {
   Alert,
   Dimensions,
   Modal,
-<<<<<<< HEAD
-=======
   Animated,
->>>>>>> master
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -21,15 +18,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import OTPInput from '../../components/auth/OTPInput';
 import { theme } from '../../config/theme';
 import api from '../../config/api';
-<<<<<<< HEAD
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuth } from '../../contexts/AuthContext';
-=======
 import { TOKEN_KEY } from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../contexts/AuthContext';
 import authService from '../../services/authService';
->>>>>>> master
 
 const { width } = Dimensions.get('window');
 
@@ -41,21 +33,11 @@ const OTPVerificationScreen = ({ route, navigation }) => {
   const [error, setError] = useState('');
   const [timeLeft, setTimeLeft] = useState(120);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-<<<<<<< HEAD
-=======
   const [shakeAnimation] = useState(new Animated.Value(0));
->>>>>>> master
   const timerRef = useRef(null);
 
   const handleVerificationSuccess = async (token, userData) => {
     try {
-<<<<<<< HEAD
-      await AsyncStorage.multiSet([
-        ['token', token],
-        ['user', JSON.stringify(userData)]
-      ]);
-      
-=======
       // Store token and user data
       await AsyncStorage.multiSet([
         [TOKEN_KEY, token],
@@ -63,7 +45,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
       ]);
 
       // Update authentication context
->>>>>>> master
       if (updateAuth) {
         await updateAuth();
       }
@@ -71,18 +52,9 @@ const OTPVerificationScreen = ({ route, navigation }) => {
       if (Platform.OS === 'web') {
         setShowSuccessModal(true);
       } else {
-<<<<<<< HEAD
-        Alert.alert(
-          'Welcome to Short X! 🎉',
-          'Your account has been verified successfully.',
-          [
-            {
-              text: 'Login',
-              onPress: () => navigation.replace('Login')
-=======
         // Show success message and navigate to main app
         Alert.alert(
-          'Welcome to TicToc India! 🎉',
+          'Welcome to Short X! 🎉',
           'Your account has been verified successfully.',
           [
             {
@@ -111,7 +83,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
                   ]
                 });
               }
->>>>>>> master
             }
           ]
         );
@@ -133,9 +104,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
           state: {
             routes: [
               {
-<<<<<<< HEAD
-                name: 'Feed'
-=======
                 name: 'Home',
                 state: {
                   routes: [
@@ -144,7 +112,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
                     }
                   ]
                 }
->>>>>>> master
               }
             ]
           }
@@ -176,8 +143,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
     }, 1000);
   };
 
-<<<<<<< HEAD
-=======
   const shakeError = () => {
     Animated.sequence([
       Animated.timing(shakeAnimation, {
@@ -203,7 +168,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
     ]).start();
   };
 
->>>>>>> master
   const handleResendOTP = async () => {
     if (loading || timeLeft > 0) return;
 
@@ -241,37 +205,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
 
     setLoading(true);
     try {
-<<<<<<< HEAD
-      const endpoint = type === 'reset' 
-        ? '/auth/verify-reset'
-        : '/auth/verify-registration';
-
-      const payload = {
-        email: email.toLowerCase(),
-        otp: otp
-      };
-
-      if (type === 'reset' && route.params.newPassword) {
-        payload.newPassword = route.params.newPassword;
-      }
-
-      const response = await api.post(endpoint, payload);
-
-      if (response.data.success) {
-        if (type === 'reset') {
-          Alert.alert(
-            'Success',
-            'Password reset successful. Please login with your new password.',
-            [
-              {
-                text: 'Login',
-                onPress: () => navigation.replace('Login')
-              }
-            ]
-          );
-        } else {
-          await handleVerificationSuccess(response.data.token, response.data.user);
-=======
       let response;
 
       if (type === 'reset') {
@@ -303,7 +236,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
 
         if (response.success && response.token && response.user) {
           await handleVerificationSuccess(response.token, response.user);
->>>>>>> master
         }
       }
     } catch (error) {
@@ -346,9 +278,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
             <Text style={styles.email}>{email}</Text>
           </View>
 
-<<<<<<< HEAD
-          <View style={styles.otpContainer}>
-=======
           <Animated.View
             style={[
               styles.otpContainer,
@@ -357,7 +286,6 @@ const OTPVerificationScreen = ({ route, navigation }) => {
               }
             ]}
           >
->>>>>>> master
             <OTPInput
               length={6}
               value={otp}
@@ -365,11 +293,7 @@ const OTPVerificationScreen = ({ route, navigation }) => {
               error={error}
             />
             {error && <Text style={styles.errorText}>{error}</Text>}
-<<<<<<< HEAD
-          </View>
-=======
           </Animated.View>
->>>>>>> master
 
           <TouchableOpacity
             style={[styles.verifyButton, loading && styles.buttonDisabled]}
@@ -426,11 +350,7 @@ const OTPVerificationScreen = ({ route, navigation }) => {
               <View style={styles.successIconContainer}>
                 <FontAwesome5 name="check-circle" size={50} color="#fff" />
               </View>
-<<<<<<< HEAD
               <Text style={styles.successTitle}>Welcome to Short X! 🎉</Text>
-=======
-              <Text style={styles.successTitle}>Welcome to TicToc India! 🎉</Text>
->>>>>>> master
               <Text style={styles.successMessage}>Your account has been verified successfully.</Text>
               <TouchableOpacity
                 style={styles.continueButton}
