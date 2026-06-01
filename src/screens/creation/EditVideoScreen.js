@@ -29,11 +29,7 @@ import { videoService } from '../../services/videoService';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const EditVideoScreen = ({ route, navigation }) => {
-<<<<<<< HEAD
-  const { videoUri, videoFile, fileSize } = route.params;
-=======
   const { videoUri, videoFile, fileSize, videoId, video: existingVideo, isEditing } = route.params;
->>>>>>> master
   const { user } = useAuth();
   const [description, setDescription] = useState('');
   const [hashtags, setHashtags] = useState([]);
@@ -50,9 +46,6 @@ const EditVideoScreen = ({ route, navigation }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-<<<<<<< HEAD
-    loadVideoMetadata();
-=======
     if (isEditing && existingVideo) {
       // Load existing video data for editing
       loadExistingVideoData();
@@ -61,7 +54,6 @@ const EditVideoScreen = ({ route, navigation }) => {
       loadVideoMetadata();
     }
     
->>>>>>> master
     return () => {
       // Cleanup video URL on unmount
       if (Platform.OS === 'web') {
@@ -73,9 +65,6 @@ const EditVideoScreen = ({ route, navigation }) => {
         }
       }
     };
-<<<<<<< HEAD
-  }, [videoUri]);
-=======
   }, [videoUri, isEditing, existingVideo]);
 
   const loadExistingVideoData = () => {
@@ -87,7 +76,6 @@ const EditVideoScreen = ({ route, navigation }) => {
       setVideoDimensions(existingVideo.dimensions || null);
     }
   };
->>>>>>> master
 
   const loadVideoMetadata = async () => {
     try {
@@ -172,8 +160,6 @@ const EditVideoScreen = ({ route, navigation }) => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const handleUpdateVideo = async () => {
     try {
       setError(null);
@@ -232,7 +218,6 @@ const EditVideoScreen = ({ route, navigation }) => {
     }
   };
 
->>>>>>> master
   const handlePost = async () => {
     try {
       setError(null);
@@ -452,19 +437,12 @@ const EditVideoScreen = ({ route, navigation }) => {
       >
         <Feather name="x" size={24} color="#fff" />
       </TouchableOpacity>
-<<<<<<< HEAD
-      <Text style={styles.headerTitle}>Edit Video</Text>
-      <TouchableOpacity
-        style={styles.headerButton}
-        onPress={handlePost}
-=======
       <Text style={styles.headerTitle}>
         {isEditing && existingVideo ? 'Edit Video' : 'Edit Video'}
       </Text>
       <TouchableOpacity
         style={styles.headerButton}
         onPress={isEditing && existingVideo ? handleUpdateVideo : handlePost}
->>>>>>> master
         disabled={loading}
       >
         <Feather name="check" size={24} color="#fff" />
@@ -501,13 +479,6 @@ const EditVideoScreen = ({ route, navigation }) => {
         >
           <ActivityIndicator size="large" color="#fff" />
           <Text style={styles.loadingText}>
-<<<<<<< HEAD
-            Uploading video... {uploadProgress}%
-          </Text>
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${uploadProgress}%` }]} />
-          </View>
-=======
             {isEditing && existingVideo ? 'Updating video...' : `Uploading video... ${uploadProgress}%`}
           </Text>
           {!isEditing && (
@@ -515,7 +486,6 @@ const EditVideoScreen = ({ route, navigation }) => {
               <View style={[styles.progressFill, { width: `${uploadProgress}%` }]} />
             </View>
           )}
->>>>>>> master
         </LinearGradient>
       </View>
     );
@@ -537,40 +507,6 @@ const EditVideoScreen = ({ route, navigation }) => {
         scrollEventThrottle={16}
       >
         <View style={styles.previewContainer}>
-<<<<<<< HEAD
-          {Platform.OS === 'web' ? (
-            <video
-              ref={videoRef}
-              src={videoUri}
-              style={styles.videoPreview}
-              controls
-              playsInline
-              autoPlay={false}
-              muted
-              poster={videoUri}
-              onLoadedData={() => console.log('Web video loaded successfully')}
-              onError={(error) => console.error('Web video loading error:', error)}
-            />
-          ) : (
-            <Video
-              ref={videoRef}
-              source={{ uri: videoUri }}
-              style={styles.videoPreview}
-              resizeMode="contain"
-              repeat={true}
-              useNativeControls={true}
-              paused={true}
-              controls={true}
-              poster={videoUri}
-              // Using modern buffer configuration
-              minBufferMs={15000}
-              maxBufferMs={50000}
-              bufferForPlaybackMs={2500}
-              bufferForPlaybackAfterRebufferMs={5000}
-              onLoad={() => console.log('Video loaded successfully')}
-              onError={(error) => console.error('Video loading error:', error)}
-            />
-=======
           {isEditing && existingVideo ? (
             // Show existing video for editing
             Platform.OS === 'web' ? (
@@ -640,7 +576,6 @@ const EditVideoScreen = ({ route, navigation }) => {
                 onError={(error) => console.error('Video loading error:', error)}
               />
             )
->>>>>>> master
           )}
         </View>
 
