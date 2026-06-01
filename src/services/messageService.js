@@ -1,18 +1,6 @@
 import api from '../config/api';
 
 export const messageService = {
-<<<<<<< HEAD
-  // Get chat list
-  getChats: async () => {
-    const response = await api.get('/messages/chats');
-    return response.data;
-  },
-
-  // Get messages for a specific chat
-  getMessages: async (chatId, page = 1, limit = 50) => {
-    const response = await api.get(`/messages/${chatId}`, {
-      params: { page, limit }
-=======
   // Get chat list with pagination support
   getChats: async (options = {}) => {
     const {
@@ -82,23 +70,15 @@ export const messageService = {
         limit,
         sort: 'desc'
       }
->>>>>>> master
     });
     return response.data;
   },
 
   // Send a message
-<<<<<<< HEAD
-  sendMessage: async (chatId, content) => {
-    const response = await api.post(`/messages/${chatId}`, {
-      content
-    });
-=======
   sendMessage: async (chatId, content, replyTo) => {
     const body = { content };
     if (replyTo) body.replyTo = replyTo;
     const response = await api.post(`/messages/${chatId}`, body);
->>>>>>> master
     return response.data;
   },
 
