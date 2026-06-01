@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-=======
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
->>>>>>> master
 import {
   View,
   Text,
@@ -15,10 +10,6 @@ import {
   Platform,
   Image,
   Alert,
-<<<<<<< HEAD
-} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-=======
   Pressable,
   Animated,
   StatusBar,
@@ -31,16 +22,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialIcons, Ionicons, Feather } from '@expo/vector-icons';
 import { Clipboard } from 'react-native';
 import { Swipeable, GestureHandlerRootView } from 'react-native-gesture-handler';
->>>>>>> master
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { theme } from '../../config/theme';
 import { messageService } from '../../services/messageService';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatMessageTime, groupMessagesByDate } from '../../utils/dateUtils';
-<<<<<<< HEAD
-import LoadingScreen from '../../components/shared/LoadingScreen';
-
-=======
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -48,18 +34,13 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
->>>>>>> master
 
 // Safely import socket service with error handling
 let socketService = null;
 try {
   socketService = require('../../services/socketService').default;
 } catch (error) {
-<<<<<<< HEAD
-  // Create a mock socket service for fallback
-=======
   console.warn('SocketService not available, using fallback');
->>>>>>> master
   socketService = {
     connect: () => Promise.resolve(false),
     disconnect: () => {},
@@ -85,153 +66,6 @@ const DirectMessagingScreen = () => {
   const route = useRoute();
   const { user } = useAuth();
   const { chatId, recipient } = route.params;
-<<<<<<< HEAD
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [inputText, setInputText] = useState('');
-  const flatListRef = useRef(null);
-  const [isTyping, setIsTyping] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
-  const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [otherUserTyping, setOtherUserTyping] = useState(false);
-  const typingTimeoutRef = useRef(null);
-
-  // Initialize socket connection and setup
-  useEffect(() => {
-    const initializeSocket = async () => {
-      try {
-        if (socketService && typeof socketService.connect === 'function') {
-          const connected = await socketService.connect();
-          setIsSocketConnected(connected);
-
-          if (connected) {
-            socketService.joinChat(chatId);
-            setupSocketListeners();
-          }
-        } else {
-          setIsSocketConnected(false);
-        }
-      } catch (error) {
-        setIsSocketConnected(false);
-      }
-    };
-
-    initializeSocket();
-
-    return () => {
-      try {
-        if (socketService) {
-          socketService.leaveChat(chatId);
-          cleanupSocketListeners();
-        }
-      } catch (error) {
-        // Silent cleanup
-      }
-    };
-  }, [chatId]);
-
-  // Navigate to user profile
-  const handleProfilePress = () => {
-    navigation.navigate('ViewProfile', { userId: recipient._id });
-  };
-
-  // Component mount and header setup
-  useEffect(() => {
-
-    navigation.setOptions({
-      headerTitle: () => (
-        <TouchableOpacity
-          style={styles.headerTitle}
-          onPress={handleProfilePress}
-          activeOpacity={0.7}
-        >
-          <Image
-            source={{ uri: recipient.avatar }}
-            style={styles.avatar}
-          />
-          <View style={styles.headerTextContainer}>
-            <View style={styles.headerNameRow}>
-              <Text style={styles.headerText}>{recipient.username}</Text>
-              <MaterialIcons
-                name="chevron-right"
-                size={16}
-                color="rgba(255, 255, 255, 0.6)"
-                style={styles.chevronIcon}
-              />
-            </View>
-            {otherUserTyping && (
-              <Text style={styles.typingIndicator}>typing...</Text>
-            )}
-          </View>
-        </TouchableOpacity>
-      ),
-    });
-
-    fetchMessages();
-    markMessagesAsRead();
-
-    // Fallback polling for when socket is not connected
-    const interval = setInterval(() => {
-      if (!isSocketConnected) {
-        fetchMessages();
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [chatId, otherUserTyping, isSocketConnected]);
-
-  // Mark messages as read when screen becomes focused
-  useFocusEffect(
-    useCallback(() => {
-      if (messages.length > 0) {
-        markMessagesAsRead();
-      }
-    }, [messages.length])
-  );
-
-  // Socket event listeners setup
-  const setupSocketListeners = useCallback(() => {
-    try {
-      if (!socketService || !isSocketConnected) {
-        return;
-      }
-
-      // Listen for new messages
-      socketService.onNewMessage((data) => {
-        if (data.success && data.data.chatId === chatId) {
-          setMessages(prev => {
-            // Check if message already exists to avoid duplicates
-            const exists = prev.some(msg => msg._id === data.data._id);
-            if (!exists) {
-              const newMessages = [...prev, data.data];
-              return newMessages;
-            }
-            return prev;
-          });
-
-          // Mark as read if chat is active
-          socketService.markAsRead(chatId);
-        }
-      });
-
-      // Listen for read receipts
-      socketService.onMessagesRead((data) => {
-        if (data.chatId === chatId) {
-          // Update read status for messages sent by current user
-          setMessages(prev => prev.map(msg => {
-            const senderId = typeof msg.sender === 'object'
-              ? (msg.sender._id?.toString() || msg.sender.id?.toString())
-              : msg.sender;
-            const currentUserId = (user?._id || user?.id)?.toString();
-            const isOwnMessage = senderId === currentUserId;
-
-            return {
-              ...msg,
-              read: isOwnMessage ? true : msg.read,
-              readAt: isOwnMessage && !msg.read ? new Date() : msg.readAt
-            };
-=======
 
   // Core state
   const [messages, setMessages] = useState([]);
@@ -451,19 +285,10 @@ const DirectMessagingScreen = () => {
               };
             }
             return msg;
->>>>>>> master
           }));
         }
       });
 
-<<<<<<< HEAD
-      // Listen for typing indicators
-      socketService.onUserTyping((data) => {
-        if (data.userId !== user?._id) {
-          setOtherUserTyping(true);
-          // Clear typing after 3 seconds
-          setTimeout(() => setOtherUserTyping(false), 3000);
-=======
       // Typing indicators
       socketService.onUserTyping((data) => {
         if (data.userId !== user?._id) {
@@ -477,21 +302,12 @@ const DirectMessagingScreen = () => {
             setOtherUserTyping(false);
             stopTypingAnimation();
           }, 3000);
->>>>>>> master
         }
       });
 
       socketService.onUserStopTyping((data) => {
         if (data.userId !== user?._id) {
           setOtherUserTyping(false);
-<<<<<<< HEAD
-        }
-      });
-    } catch (error) {
-      // Silent error handling
-    }
-  }, [chatId, user?._id, isSocketConnected]);
-=======
           stopTypingAnimation();
         }
       });
@@ -501,7 +317,6 @@ const DirectMessagingScreen = () => {
       // Socket listeners error
     }
   };
->>>>>>> master
 
   const cleanupSocketListeners = useCallback(() => {
     try {
@@ -512,31 +327,6 @@ const DirectMessagingScreen = () => {
         socketService.removeAllListeners('user_stop_typing');
       }
     } catch (error) {
-<<<<<<< HEAD
-      // Silent cleanup
-    }
-  }, []);
-
-  const fetchMessages = async () => {
-    try {
-      const response = await messageService.getMessages(chatId);
-      if (response.success) {
-        const newMessages = response.data || [];
-        const previousLength = messages.length;
-
-
-
-        setMessages(newMessages);
-
-        if (isInitialLoad) {
-          setIsInitialLoad(false);
-        }
-
-        // Mark messages as read if new messages arrived
-        if (newMessages.length > previousLength) {
-          markMessagesAsRead();
-        }
-=======
       // Socket cleanup error
     }
   }, []);
@@ -571,7 +361,6 @@ const DirectMessagingScreen = () => {
             })
           )
         ).start();
->>>>>>> master
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to load messages. Please try again.');
@@ -580,73 +369,6 @@ const DirectMessagingScreen = () => {
     }
   };
 
-<<<<<<< HEAD
-  const markMessagesAsRead = async () => {
-    try {
-      await messageService.markAsRead(chatId);
-
-      // Update local state to reflect read status for received messages
-      setMessages(prevMessages =>
-        prevMessages.map(msg => {
-          // Only update read status for messages sent by others (received messages)
-          const senderId = typeof msg.sender === 'object'
-            ? (msg.sender._id?.toString() || msg.sender.id?.toString())
-            : msg.sender;
-          const currentUserId = (user?._id || user?.id)?.toString();
-          const isSentByOthers = senderId !== currentUserId;
-          return {
-            ...msg,
-            read: isSentByOthers ? true : msg.read
-          };
-        })
-      );
-    } catch (error) {
-      // Silent error handling
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!inputText.trim()) return;
-
-    const messageContent = inputText.trim();
-    setInputText('');
-
-    try {
-      // Try socket first for real-time delivery
-      if (isSocketConnected && socketService && typeof socketService.sendMessage === 'function') {
-        try {
-          const sent = socketService.sendMessage(chatId, messageContent);
-          if (sent) {
-            return;
-          }
-        } catch (socketError) {
-          // Fall back to HTTP
-        }
-      }
-
-      // Fallback to HTTP API
-      const response = await messageService.sendMessage(chatId, messageContent);
-
-      if (response.success) {
-        setMessages(prev => {
-          // Check if message already exists (from socket)
-          const exists = prev.some(msg => msg._id === response.data._id);
-          if (!exists) {
-            return [...prev, response.data];
-          }
-          return prev;
-        });
-
-        // Scroll to bottom with animation for new messages
-        setTimeout(() => {
-          flatListRef.current?.scrollToEnd({ animated: true });
-        }, 100);
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to send message. Please try again.');
-      // Restore the message text on error
-      setInputText(messageContent);
-=======
   const loadOlderMessages = async () => {
     if (!canLoadMore || loadingOlder || !oldestMessageId || hasReachedTop) return;
 
@@ -753,35 +475,17 @@ const DirectMessagingScreen = () => {
       Alert.alert('Error', 'Failed to send message. Please try again.');
     } finally {
       setIsSending(false);
->>>>>>> master
     }
   };
 
   const handleTextChange = (text) => {
     setInputText(text);
-<<<<<<< HEAD
-
-=======
     
->>>>>>> master
     // Handle typing indicators
     if (isSocketConnected && socketService) {
       try {
         if (text.trim() && !isTyping) {
           setIsTyping(true);
-<<<<<<< HEAD
-          if (typeof socketService.startTyping === 'function') {
-            socketService.startTyping(chatId);
-          }
-        } else if (!text.trim() && isTyping) {
-          setIsTyping(false);
-          if (typeof socketService.stopTyping === 'function') {
-            socketService.stopTyping(chatId);
-          }
-        }
-
-        // Clear typing timeout
-=======
           socketService.startTyping?.(chatId);
         } else if (!text.trim() && isTyping) {
           setIsTyping(false);
@@ -789,24 +493,10 @@ const DirectMessagingScreen = () => {
         }
 
         // Auto-stop typing after 2 seconds of no activity
->>>>>>> master
         if (typingTimeoutRef.current) {
           clearTimeout(typingTimeoutRef.current);
         }
 
-<<<<<<< HEAD
-        // Stop typing after 2 seconds of inactivity
-        if (text.trim()) {
-          typingTimeoutRef.current = setTimeout(() => {
-            setIsTyping(false);
-            if (typeof socketService.stopTyping === 'function') {
-              socketService.stopTyping(chatId);
-            }
-          }, 2000);
-        }
-      } catch (error) {
-        // Silent error handling
-=======
         if (text.trim()) {
           typingTimeoutRef.current = setTimeout(() => {
             setIsTyping(false);
@@ -815,13 +505,10 @@ const DirectMessagingScreen = () => {
         }
       } catch (error) {
         console.error('Typing indicator error:', error);
->>>>>>> master
       }
     }
   };
 
-<<<<<<< HEAD
-=======
   const updateMessageReadStatus = () => {
     setMessages(prev => prev.map(msg => {
       const senderId = typeof msg.sender === 'object' 
@@ -890,7 +577,6 @@ const DirectMessagingScreen = () => {
     Alert.alert('Voice Call', 'Voice call feature coming soon!');
   };
 
->>>>>>> master
   const handleScroll = (event) => {
     const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
     const isAtBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 50;
@@ -902,137 +588,6 @@ const DirectMessagingScreen = () => {
     setShowScrollToBottom(false);
   };
 
-<<<<<<< HEAD
-  // Get messages with date separators using utility function
-  const getMessagesWithDateSeparators = () => {
-    return groupMessagesByDate(messages);
-  };
-
-  // Render date separator
-  const renderDateSeparator = (dateText) => (
-    <View style={styles.dateSeparatorContainer}>
-      <View style={styles.dateSeparatorLine} />
-      <Text style={styles.dateSeparatorText}>{dateText}</Text>
-      <View style={styles.dateSeparatorLine} />
-    </View>
-  );
-
-  const renderItem = ({ item }) => {
-    // Render date separator
-    if (item.type === 'date') {
-      return renderDateSeparator(item.dateText);
-    }
-
-    // Render message
-    // Enhanced message alignment logic to handle different response formats
-    let senderId;
-
-    if (typeof item.sender === 'object' && item.sender !== null) {
-      // Populated sender object - handle both _id and id fields
-      senderId = item.sender._id?.toString() || item.sender.id?.toString();
-    } else if (typeof item.sender === 'string') {
-      // Just sender ID string
-      senderId = item.sender;
-    } else {
-      senderId = null;
-    }
-
-    // Handle current user ID - convert to string for comparison
-    const currentUserId = (user?._id || user?.id)?.toString();
-    const isOwnMessage = senderId === currentUserId;
-
-    return (
-      <View
-        style={[
-          styles.messageContainer,
-          isOwnMessage ? styles.ownMessage : styles.otherMessage,
-        ]}
-      >
-        <Text style={[
-          styles.messageText,
-          isOwnMessage ? styles.ownMessageText : styles.otherMessageText
-        ]}>
-          {item.content}
-        </Text>
-        <View style={styles.messageFooter}>
-          <Text style={styles.messageTime}>
-            {formatMessageTime(item.createdAt)}
-          </Text>
-          {isOwnMessage && (
-            <MaterialIcons
-              name={item.read ? "done-all" : "done"}
-              size={16}
-              color={item.read ? theme.colors.primary : 'rgba(255, 255, 255, 0.7)'}
-              style={styles.readIcon}
-            />
-          )}
-        </View>
-      </View>
-    );
-  };
-
-  if (loading) {
-    return <LoadingScreen message="Loading messages..." />;
-  }
-
-  return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
-
-
-      <FlatList
-        ref={flatListRef}
-        data={getMessagesWithDateSeparators()}
-        renderItem={renderItem}
-        keyExtractor={item => item.id || item._id}
-        contentContainerStyle={styles.messagesList}
-        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
-        onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}
-      />
-
-      {/* Scroll to bottom button */}
-      {showScrollToBottom && (
-        <TouchableOpacity
-          style={styles.scrollToBottomButton}
-          onPress={scrollToBottom}
-        >
-          <MaterialIcons name="keyboard-arrow-down" size={24} color="white" />
-        </TouchableOpacity>
-      )}
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={handleTextChange}
-          placeholder="Type a message..."
-          placeholderTextColor={theme.colors.textSecondary}
-          multiline
-          maxLength={1000}
-        />
-        <TouchableOpacity
-          style={[
-            styles.sendButton,
-            !inputText.trim() && styles.sendButtonDisabled,
-          ]}
-          onPress={sendMessage}
-          disabled={!inputText.trim()}
-        >
-          <MaterialIcons
-            name="send"
-            size={24}
-            color={inputText.trim() ? theme.colors.primary : theme.colors.textSecondary}
-          />
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
-=======
   const handleMessageLongPress = (message) => {
     const isOwnMessage = (typeof message.sender === 'object' 
       ? message.sender._id?.toString() 
@@ -1480,81 +1035,12 @@ const TypingIndicator = () => {
       <Animated.View style={[styles.typingDot, { opacity: dot2 }]} />
       <Animated.View style={[styles.typingDot, { opacity: dot3 }]} />
     </View>
->>>>>>> master
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-<<<<<<< HEAD
-    backgroundColor: theme.colors.background,
-  },
-  headerTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.xs,
-    paddingVertical: theme.spacing.xs,
-    borderRadius: theme.spacing.xs,
-  },
-  avatar: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: theme.spacing.sm,
-  },
-  headerTextContainer: {
-    flex: 1,
-  },
-  headerNameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerText: {
-    color: theme.colors.text,
-    fontSize: theme.typography.body.fontSize,
-    fontWeight: 'bold',
-  },
-  chevronIcon: {
-    marginLeft: 4,
-  },
-  typingIndicator: {
-    color: theme.colors.primary,
-    fontSize: 12,
-    fontStyle: 'italic',
-  },
-  messagesList: {
-    padding: theme.spacing.md,
-    paddingBottom: theme.spacing.lg,
-  },
-  messageContainer: {
-    maxWidth: '80%',
-    marginVertical: theme.spacing.xs,
-    padding: theme.spacing.sm,
-    borderRadius: theme.borderRadius.md,
-    minWidth: 60, // Ensure minimum width for small messages
-  },
-  ownMessage: {
-    alignSelf: 'flex-end',        // 👈 RIGHT SIDE for sent messages
-    backgroundColor: theme.colors.primary,
-    marginLeft: '20%', // Force right alignment
-  },
-  otherMessage: {
-    alignSelf: 'flex-start',      // 👈 LEFT SIDE for received messages
-    backgroundColor: theme.colors.primary,
-    marginRight: '20%', // Force left alignment
-  },
-  messageText: {
-    fontSize: theme.typography.body.fontSize,
-  },
-  ownMessageText: {
-    color: 'white', // White text for sent messages
-  },
-  otherMessageText: {
-    color: theme.colors.text, // Theme text color for received messages
-  },
-
-=======
     backgroundColor: '#0a0a0a',
   },
   loadingContainer: {
@@ -1694,62 +1180,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
   },
->>>>>>> master
   messageFooter: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-<<<<<<< HEAD
-    marginTop: theme.spacing.xs,
-  },
-  messageTime: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: theme.typography.caption.fontSize,
-=======
     marginTop: 4,
   },
   timestamp: {
     fontSize: 11,
->>>>>>> master
   },
   readIcon: {
     marginLeft: 4,
   },
-<<<<<<< HEAD
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: theme.spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.border,
-  },
-  input: {
-    flex: 1,
-    minHeight: 40,
-    maxHeight: 100,
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-    marginRight: theme.spacing.sm,
-    color: theme.colors.text,
-  },
-  sendButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: theme.colors.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendButtonDisabled: {
-    opacity: 0.7,
-  },
-  scrollToBottomButton: {
-    position: 'absolute',
-    right: 20,
-    bottom: 80,
-=======
   
   // Reply swipe action
   replySwipeAction: {
@@ -1766,44 +1208,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 20,
->>>>>>> master
     backgroundColor: theme.colors.primary,
     borderRadius: 25,
     width: 50,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-<<<<<<< HEAD
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  dateSeparatorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.md,
-  },
-  dateSeparatorLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  dateSeparatorText: {
-    color: 'rgba(255, 255, 255, 0.6)',
-    fontSize: theme.typography.caption.fontSize,
-    fontWeight: '500',
-    marginHorizontal: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.xs,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: 12,
-    paddingVertical: 4,
-=======
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -1927,12 +1337,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
->>>>>>> master
   },
 });
 
 export default DirectMessagingScreen;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
