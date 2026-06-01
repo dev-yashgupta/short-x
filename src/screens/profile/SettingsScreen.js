@@ -183,11 +183,7 @@ const SettingsScreen = ({ navigation }) => {
           onPress: () => {
             // Navigate to help center or open external link
             navigation.navigate('WebView', {
-<<<<<<< HEAD
-              url: 'https://help.tiktok.com',
-=======
-              url: 'https://help.TicToc.com',
->>>>>>> master
+              url: 'https://help.Short-X.com',
               title: 'Help Center'
             });
           }
