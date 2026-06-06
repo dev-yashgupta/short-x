@@ -1,17 +1,10 @@
 import { Linking, Platform, Share } from 'react-native';
-<<<<<<< HEAD
-=======
 import { FRONTEND_URL, WEB_URL, MOBILE_URL } from '../config/constants';
->>>>>>> master
 
 export const setupDeepLinking = (navigation) => {
   // Handle URLs when app is already open
   const handleUrl = ({ url }) => {
     if (url) {
-<<<<<<< HEAD
-      const route = url.replace(/.*?:\/\/?/, '');
-      handleDeepLink(route, navigation);
-=======
       try {
         const route = url.replace(/.*?:\/\/?/, '');
         console.log('Deep link received:', url, 'Route:', route);
@@ -63,7 +56,6 @@ export const setupDeepLinking = (navigation) => {
       }
     } catch (_) {
       // No-op; SPA fallback will handle the route
->>>>>>> master
     }
   };
 
@@ -75,19 +67,13 @@ export const setupDeepLinking = (navigation) => {
       // For web, use the current pathname if no initial URL
       if (!url && Platform.OS === 'web') {
         url = window.location.pathname;
-<<<<<<< HEAD
-=======
         // Attempt native app open for matching paths, fallback to SPA
         attemptOpenAppDeepLink(url);
->>>>>>> master
       }
 
       if (url) {
         const route = url.replace(/.*?:\/\/?/, '');
-<<<<<<< HEAD
-=======
         console.log('Initial URL received:', url, 'Route:', route);
->>>>>>> master
         handleDeepLink(route, navigation);
       }
     } catch (error) {
@@ -108,15 +94,6 @@ export const setupDeepLinking = (navigation) => {
 };
 
 const handleDeepLink = (route, navigation) => {
-<<<<<<< HEAD
-  // Extract the base route without parameters
-  const baseRoute = route.split('/')[0];
-  
-  // Handle specific routes
-  switch (baseRoute) {
-    case 'home':
-      navigation.navigate('Main', { screen: 'Feed' });
-=======
   try {
     // Extract the base route without parameters
     const baseRoute = route.split('/')[0];
@@ -134,7 +111,6 @@ const handleDeepLink = (route, navigation) => {
     case 'home':
     case '':
       navigation.navigate('Main', { screen: 'Home' });
->>>>>>> master
       break;
     case 'discover':
       navigation.navigate('Main', { screen: 'Discover' });
@@ -151,11 +127,6 @@ const handleDeepLink = (route, navigation) => {
     case 'user':
       const userId = route.split('/')[1];
       if (userId) {
-<<<<<<< HEAD
-        navigation.navigate('Main', { 
-          screen: 'ViewProfile',
-          params: { userId }
-=======
         const sanitizedUserId = sanitizeParam(userId);
         navigation.navigate('Main', { 
           screen: 'Home',
@@ -163,18 +134,12 @@ const handleDeepLink = (route, navigation) => {
             screen: 'ViewProfile',
             params: { userId: sanitizedUserId }
           }
->>>>>>> master
         });
       }
       break;
     case 'video':
       const videoId = route.split('/')[1];
       if (videoId) {
-<<<<<<< HEAD
-        navigation.navigate('Main', {
-          screen: 'Feed',
-          params: { videoId }
-=======
         const sanitizedVideoId = sanitizeParam(videoId);
         navigation.navigate('Main', {
           screen: 'Home',
@@ -182,18 +147,12 @@ const handleDeepLink = (route, navigation) => {
             screen: 'VideoPlayer',
             params: { videoId: sanitizedVideoId }
           }
->>>>>>> master
         });
       }
       break;
     case 'hashtag':
       const tag = route.split('/')[1];
       if (tag) {
-<<<<<<< HEAD
-        navigation.navigate('Main', {
-          screen: 'HashtagVideos',
-          params: { tag }
-=======
         const sanitizedTag = sanitizeParam(tag);
         navigation.navigate('Main', {
           screen: 'Discover',
@@ -201,50 +160,10 @@ const handleDeepLink = (route, navigation) => {
             screen: 'HashtagVideos',
             params: { tag: sanitizedTag }
           }
->>>>>>> master
         });
       }
       break;
     case 'search':
-<<<<<<< HEAD
-      navigation.navigate('Main', { screen: 'Search' });
-      break;
-    default:
-      // If no specific route matches, preserve the current tab
-      break;
-  }
-};
-
-// Enhanced helper function to generate URLs for sharing
-export const generateShareUrl = (screen, params = {}) => {
-  const baseUrl = Platform.select({
-    web: 'https://yourdomain.com',
-    default: 'ShortX://'
-  });
-
-  switch (screen) {
-    case 'video':
-      return {
-        url: `${baseUrl}/video/${params.videoId}`,
-        message: params.description 
-          ? `${params.description}\n\nWatch this video on Short X: `
-          : 'Watch this video on Short X: ',
-        title: 'Share Video'
-      };
-    case 'profile':
-      return {
-        url: `${baseUrl}/user/${params.userId}`,
-        message: params.username 
-          ? `Check out @${params.username} on Short X: `
-          : 'Check out this profile on Short X: ',
-        title: 'Share Profile'
-      };
-    case 'hashtag':
-      return {
-        url: `${baseUrl}/hashtag/${params.tag}`,
-        message: `Check out #${params.tag} on Short X: `,
-        title: 'Share Hashtag'
-=======
       navigation.navigate('Main', { 
         screen: 'Home',
         params: { screen: 'Search' }
@@ -281,7 +200,7 @@ export const generateShareUrl = (screen, params = {}) => {
       
       return {
         url: `${baseUrl}/video/${params.videoId}`,
-        message: `${videoDescription}\n\nWatch on TicToc India: `,
+        message: `${videoDescription}\n\nWatch on Short X: `,
         title: 'Share Video',
         hashtags: '#ShortX #ShortVideos'
       };
@@ -289,7 +208,7 @@ export const generateShareUrl = (screen, params = {}) => {
       const username = params.username || 'User';
       return {
         url: `${baseUrl}/user/${params.userId}`,
-        message: `Check out @${username} on TicToc India: `,
+        message: `Check out @${username} on Short X: `,
         title: 'Share Profile',
         hashtags: '#ShortX #Profile'
       };
@@ -297,22 +216,16 @@ export const generateShareUrl = (screen, params = {}) => {
       const tag = params.tag || 'trending';
       return {
         url: `${baseUrl}/hashtag/${tag}`,
-        message: `Discover amazing #${tag} videos on TicToc India: `,
+        message: `Discover amazing #${tag} videos on Short X: `,
         title: 'Share Hashtag',
         hashtags: `#${tag} #ShortX`
->>>>>>> master
       };
     default:
       return {
         url: baseUrl,
-<<<<<<< HEAD
-        message: 'Check out Short X: ',
-        title: 'Share'
-=======
-        message: 'Join TicToc India and discover amazing short videos: ',
-        title: 'TicToc India',
+        message: 'Join Short X and discover amazing short videos: ',
+        title: 'Short X',
         hashtags: '#ShortX #ShortVideos #Trending'
->>>>>>> master
       };
   }
 };
@@ -362,11 +275,6 @@ export const validateShareUrl = (url) => {
   
   try {
     const urlObj = new URL(url);
-<<<<<<< HEAD
-    // Ensure the URL has our domain
-    if (!urlObj.hostname.includes('yourdomain.com') && 
-        !urlObj.protocol.includes('ShortX')) {
-=======
     // Ensure the URL has our configured domain or scheme
     let webHost;
     try {
@@ -379,7 +287,6 @@ export const validateShareUrl = (url) => {
     const isAppScheme = urlObj.protocol.replace(':', '') === MOBILE_URL.replace('://', '');
 
     if (!isWebMatch && !isAppScheme) {
->>>>>>> master
       return null;
     }
     return url;
@@ -387,8 +294,6 @@ export const validateShareUrl = (url) => {
     return null;
   }
 };
-<<<<<<< HEAD
-=======
 
 
 
@@ -406,4 +311,3 @@ export const isValidDeepLink = (url) => {
     return false;
   }
 };
->>>>>>> master
