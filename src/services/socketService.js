@@ -20,34 +20,21 @@ class SocketService {
 
   async connect() {
     try {
-<<<<<<< HEAD
-      // Check if socket.io-client is available
-      if (!io) {
-=======
       console.log('🔌 SocketService: Starting connection attempt...');
       
       // Check if socket.io-client is available
       if (!io) {
         console.log('❌ SocketService: socket.io-client not available');
->>>>>>> master
         return false;
       }
 
       const token = await AsyncStorage.getItem(TOKEN_KEY);
       if (!token) {
-<<<<<<< HEAD
-=======
         console.log('❌ SocketService: No auth token found');
->>>>>>> master
         return false;
       }
 
       if (this.socket && this.isConnected) {
-<<<<<<< HEAD
-        return true;
-      }
-
-=======
         console.log('✅ SocketService: Already connected, reusing connection');
         return true;
       }
@@ -55,7 +42,6 @@ class SocketService {
       console.log('🚀 SocketService: Creating new socket connection to:', API_URL);
       console.log('🔑 SocketService: Using auth token:', token ? 'Available' : 'Missing');
 
->>>>>>> master
       this.socket = io(API_URL, {
         auth: { token },
         transports: ['websocket', 'polling'],
@@ -63,18 +49,12 @@ class SocketService {
         reconnection: true,
         reconnectionAttempts: this.maxReconnectAttempts,
         reconnectionDelay: 1000,
-<<<<<<< HEAD
-=======
         forceNew: true, // Force new connection
->>>>>>> master
       });
 
       this.setupEventListeners();
 
       return new Promise((resolve) => {
-<<<<<<< HEAD
-        this.socket.on('connect', () => {
-=======
         const timeout = setTimeout(() => {
           console.log('⏰ SocketService: Connection timeout after 20 seconds');
           this.isConnected = false;
@@ -84,15 +64,12 @@ class SocketService {
         this.socket.on('connect', () => {
           console.log('✅ SocketService: Connected successfully! Socket ID:', this.socket.id);
           clearTimeout(timeout);
->>>>>>> master
           this.isConnected = true;
           this.reconnectAttempts = 0;
           resolve(true);
         });
 
         this.socket.on('connect_error', (error) => {
-<<<<<<< HEAD
-=======
           console.log('❌ SocketService: Connection error:', error.message);
           console.log('🔍 SocketService: Error details:', {
             type: error.type,
@@ -101,17 +78,13 @@ class SocketService {
             transport: error.transport
           });
           clearTimeout(timeout);
->>>>>>> master
           this.isConnected = false;
           resolve(false);
         });
       });
 
     } catch (error) {
-<<<<<<< HEAD
-=======
       console.log('❌ SocketService: Connect method error:', error);
->>>>>>> master
       return false;
     }
   }
@@ -206,8 +179,6 @@ class SocketService {
     }
   }
 
-<<<<<<< HEAD
-=======
   // Global chat system events
   onChatListUpdate(callback) {
     if (this.socket) {
@@ -234,7 +205,6 @@ class SocketService {
     }
   }
 
->>>>>>> master
   onUserTyping(callback) {
     if (this.socket) {
       this.socket.on('user_typing', callback);
