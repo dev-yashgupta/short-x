@@ -1,16 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-<<<<<<< HEAD
-import { Alert, Linking } from 'react-native';
-=======
 import { Alert, Linking, Platform } from 'react-native';
 import {
   getMessaging,
   requestPermission,
   AuthorizationStatus
 } from '@react-native-firebase/messaging';
->>>>>>> master
 
 class PermissionManager {
   constructor() {
@@ -39,25 +35,15 @@ class PermissionManager {
   async requestInitialPermissions() {
     try {
       const isFirstLaunch = await this.checkFirstLaunch();
-<<<<<<< HEAD
-      
-      if (isFirstLaunch) {
-        // Request all permissions on first launch
-=======
 
       if (isFirstLaunch) {
         // Request all permissions on first launch (excluding notifications initially)
->>>>>>> master
         await this.checkMultiplePermissions(['camera', 'microphone', 'mediaLibrary']);
         await this.markAsLaunched();
       } else {
         // Check for previously denied permissions
         const deniedPermissions = [];
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> master
         for (const permission of ['camera', 'microphone', 'mediaLibrary']) {
           const isGranted = await this.checkPermissionStatus(permission);
           if (!isGranted) {
@@ -75,12 +61,6 @@ class PermissionManager {
     }
   }
 
-<<<<<<< HEAD
-  async checkPermissionStatus(permission) {
-    try {
-      let status;
-      
-=======
   // Request Firebase notification permissions
   async requestNotificationPermissions() {
     try {
@@ -203,7 +183,6 @@ class PermissionManager {
     try {
       let status;
 
->>>>>>> master
       switch (permission) {
         case 'camera':
           status = await Camera.getCameraPermissionsAsync();
@@ -214,11 +193,8 @@ class PermissionManager {
         case 'mediaLibrary':
           status = await MediaLibrary.getPermissionsAsync();
           break;
-<<<<<<< HEAD
-=======
         case 'notifications':
           return await this.checkNotificationPermissionStatus();
->>>>>>> master
         default:
           return false;
       }
@@ -234,22 +210,11 @@ class PermissionManager {
     try {
       const { showAlert = true } = options;
       let status;
-<<<<<<< HEAD
-=======
       let isGranted = false;
->>>>>>> master
 
       switch (permission) {
         case 'camera':
           status = await Camera.requestCameraPermissionsAsync();
-<<<<<<< HEAD
-          break;
-        case 'microphone':
-          status = await Camera.requestMicrophonePermissionsAsync();
-          break;
-        case 'mediaLibrary':
-          status = await MediaLibrary.requestPermissionsAsync();
-=======
           isGranted = status.status === 'granted';
           break;
         case 'microphone':
@@ -262,16 +227,11 @@ class PermissionManager {
           break;
         case 'notifications':
           isGranted = await this.requestNotificationPermissions();
->>>>>>> master
           break;
         default:
           throw new Error(`Unknown permission: ${permission}`);
       }
 
-<<<<<<< HEAD
-      const isGranted = status.status === 'granted';
-=======
->>>>>>> master
       this.permissions[permission] = isGranted;
 
       if (!isGranted && showAlert) {
@@ -313,10 +273,6 @@ class PermissionManager {
         title: 'Media Library Permission Required',
         message: 'We need access to your media library to save and access videos.',
       },
-<<<<<<< HEAD
-    };
-
-=======
       notifications: {
         title: 'Notification Permission Required',
         message: 'We need permission to send you notifications for likes, comments, and messages.',
@@ -325,7 +281,6 @@ class PermissionManager {
 
     const settingsAction = permission === 'notifications' ? 'openNotificationSettings' : 'openSettings';
 
->>>>>>> master
     Alert.alert(
       messages[permission].title,
       messages[permission].message,
@@ -333,11 +288,7 @@ class PermissionManager {
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Open Settings',
-<<<<<<< HEAD
-          onPress: () => this.openSettings(),
-=======
           onPress: () => this[settingsAction](),
->>>>>>> master
         },
       ],
       { cancelable: true }
@@ -376,8 +327,6 @@ class PermissionManager {
     return this.checkMultiplePermissions(['camera', 'microphone', 'mediaLibrary']);
   }
 
-<<<<<<< HEAD
-=======
   // Check all app permissions including notifications
   async checkAllPermissions() {
     return this.checkMultiplePermissions(['camera', 'microphone', 'mediaLibrary', 'notifications']);
@@ -388,7 +337,6 @@ class PermissionManager {
     return this.checkAndRequestPermission('notifications');
   }
 
->>>>>>> master
   // Location permission methods removed
 }
 
