@@ -3,10 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TOKEN_KEY } from '../config/api';
 
 class NotificationService {
-<<<<<<< HEAD
-  async getNotifications(page = 1, limit = 20) {
-    try {
-=======
   constructor() {
     this.lastFetchTime = 0;
     this.minFetchInterval = 10000; // 10 seconds between fetches (reduced from 30s)
@@ -64,7 +60,6 @@ class NotificationService {
 
     try {
       this.lastFetchTime = Date.now();
->>>>>>> master
       const token = await AsyncStorage.getItem(TOKEN_KEY);
       const response = await api.get(`/notifications`, {
         params: { page, limit },
@@ -72,11 +67,6 @@ class NotificationService {
           'x-auth-token': token
         }
       });
-<<<<<<< HEAD
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-=======
       
       // Reset rate limit status on successful request
       this.rateLimitedUntil = 0;
@@ -92,7 +82,6 @@ class NotificationService {
         return null;
       }
       
->>>>>>> master
       throw error;
     }
   }
@@ -147,8 +136,6 @@ class NotificationService {
       throw error;
     }
   }
-<<<<<<< HEAD
-=======
 
   // Background fetch with more lenient rate limiting
   async backgroundFetch(page = 1, limit = 20) {
@@ -395,7 +382,6 @@ class NotificationService {
       inboxHasUnread: false,
     });
   }
->>>>>>> master
 }
 
 export const notificationService = new NotificationService();
