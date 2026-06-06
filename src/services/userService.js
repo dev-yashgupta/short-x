@@ -22,18 +22,6 @@ class UserService {
 
   async toggleFollow(userId) {
     try {
-<<<<<<< HEAD
-      console.log('Checking current follow status for user:', userId);
-      const userProfile = await this.getUserProfile(userId);
-      const isCurrentlyFollowing = userProfile.isFollowing;
-      const token = await AsyncStorage.getItem(TOKEN_KEY);
-
-      console.log('Current follow status:', isCurrentlyFollowing);
-      let response;
-
-      if (isCurrentlyFollowing) {
-        response = await api.delete(`/users/${userId}/follow`, {
-=======
       console.log('VideoControls Debug: toggleFollow called with userId:', userId);
 
       // Instead of checking current status first, let the backend handle it
@@ -45,15 +33,10 @@ class UserService {
       // Try to follow first (this will fail if already following)
       try {
         const response = await api.post(`/users/${userId}/follow`, {}, {
->>>>>>> master
           headers: {
             'x-auth-token': token
           }
         });
-<<<<<<< HEAD
-      } else {
-        response = await api.post(`/users/${userId}/follow`, {}, {
-=======
         console.log('VideoControls Debug: Follow request successful:', response.data);
         return response.data;
       } catch (followError) {
@@ -61,24 +44,15 @@ class UserService {
 
         // If follow failed, try unfollow
         const response = await api.post(`/users/${userId}/unfollow`, {}, {
->>>>>>> master
           headers: {
             'x-auth-token': token
           }
         });
-<<<<<<< HEAD
-      }
-
-      return response.data;
-    } catch (error) {
-      console.error('Error toggling follow:', error);
-=======
         console.log('VideoControls Debug: Unfollow request successful:', response.data);
         return response.data;
       }
     } catch (error) {
       console.error('VideoControls Debug: Error toggling follow:', error);
->>>>>>> master
       throw error;
     }
   }
@@ -100,8 +74,6 @@ class UserService {
       throw error;
     }
   }
-<<<<<<< HEAD
-=======
 
   async updatePrivacySettings(settings) {
     try {
@@ -227,7 +199,6 @@ class UserService {
       throw error;
     }
   }
->>>>>>> master
 }
 
 export const userService = new UserService();
