@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
   "short_name": "Short X",
   "name": "Short X - Share and discover short videos",
-=======
-  "short_name": "TicToc India",
-  "name": "TicToc India - Share and discover short videos",
->>>>>>> master
   "icons": [
     {
       "src": "favicon.png",
