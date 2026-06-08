@@ -4,7 +4,7 @@
 
 ## 🎬 Project Overview
 
-**Short X** is a production-grade TikTok-like video sharing application that brings together the best of social entertainment with cutting-edge AI/ML capabilities. The platform features:
+**Short X** is a production-grade video sharing application that brings together the best of social entertainment with cutting-edge AI/ML capabilities. The platform features:
 
 - **AI-Powered Content Discovery**: Collaborative filtering and machine learning-based recommendation engine
 - **Short-Form Videos**: Optimized video player with advanced controls and interactive features
